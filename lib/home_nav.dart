@@ -80,7 +80,7 @@ class _HomeNavPageState extends State<HomeNavPage> with SingleTickerProviderStat
                 size: publicController.size.value*.08,
                 color: color,
               ),
-              SizedBox(height: publicController.size.value*.01),
+              SizedBox(height: publicController.size.value *.01),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: publicController.size.value*.02),
                 child: AutoSizeText(

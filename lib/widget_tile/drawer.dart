@@ -10,6 +10,7 @@ class NavigationDrawer extends StatefulWidget {
   @override
   _NavigationDrawerState createState() => _NavigationDrawerState();
 }
+
 class _NavigationDrawerState extends State<NavigationDrawer> {
   @override
   Widget build(BuildContext context) {
@@ -26,26 +27,33 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                 ///Body
                 Container(
                     width: MediaQuery.of(context).size.width,
-                    height: publicController.size.value*.4,
-                    color: ThemeAndColor.themeColor.withOpacity(0.4),
-                    child: Image.asset('assets/logo.png',height: publicController.size.value*.12,fit: BoxFit.contain)),
+                    height: publicController.size.value * .4,
+                    color: const Color(0xFF231f54),
+                    child: Image.asset('assets/logo.png',
+                        height: publicController.size.value * .12,
+                        fit: BoxFit.contain)),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: publicController.size.value*.03),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: publicController.size.value * .03),
                   child: Column(
                     children: [
                       //SizedBox(height: publicController.size.value*.07),
-                      const Divider(color: Colors.grey,height: 0.5),
-                      _functionBuilder('Terms & Condition',LineAwesomeIcons.gavel),
-                      const Divider(color: Colors.grey,height: 0.5),
-                      _functionBuilder('Payment Method',LineAwesomeIcons.money_check),
-                      const Divider(color: Colors.grey,height: 0.5),
-                      _functionBuilder('Refund Policy',LineAwesomeIcons.undo),
-                      const Divider(color: Colors.grey,height: 0.5),
-                      _functionBuilder('About Us',LineAwesomeIcons.info_circle),
-                      const Divider(color: Colors.grey,height: 0.5),
-                      _functionBuilder('Privacy Policy',LineAwesomeIcons.user_secret),
-                      const Divider(color: Colors.grey,height: 0.5),
-                      SizedBox(height: publicController.size.value*.04),
+                      const Divider(color: Colors.grey, height: 0.5),
+                      _functionBuilder(
+                          'Terms & Condition', LineAwesomeIcons.gavel),
+                      const Divider(color: Colors.grey, height: 0.5),
+                      _functionBuilder(
+                          'Payment Method', LineAwesomeIcons.money_check),
+                      const Divider(color: Colors.grey, height: 0.5),
+                      _functionBuilder('Refund Policy', LineAwesomeIcons.undo),
+                      const Divider(color: Colors.grey, height: 0.5),
+                      _functionBuilder(
+                          'About Us', LineAwesomeIcons.info_circle),
+                      const Divider(color: Colors.grey, height: 0.5),
+                      _functionBuilder(
+                          'Privacy Policy', LineAwesomeIcons.user_secret),
+                      const Divider(color: Colors.grey, height: 0.5),
+                      SizedBox(height: publicController.size.value * .04),
                     ],
                   ),
                 ),
@@ -68,41 +76,45 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     );
   }
 
-  Widget _socialIconBuilder(IconData iconData)=>GetBuilder<PublicController>(
-    builder: (publicController) {
-      return InkWell(
-        onTap: (){},
-        child: Container(
-            padding: EdgeInsets.symmetric(horizontal: publicController.size.value*.017,vertical: publicController.size.value*.01),
-            child: Icon(iconData,size: publicController.size.value*.075,color:ThemeAndColor.themeColor)
-        ),
-      );
-    }
-  );
+  Widget _socialIconBuilder(IconData iconData) =>
+      GetBuilder<PublicController>(builder: (publicController) {
+        return InkWell(
+          onTap: () {},
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: publicController.size.value * .017,
+              vertical: publicController.size.value * .01,
+            ),
+            child: Icon(
+              iconData,
+              size: publicController.size.value * .075,
+              color: ThemeAndColor.themeColor,
+            ),
+          ),
+        );
+      });
 
-  Widget _functionBuilder(String name,IconData iconData) =>
-      GetBuilder<PublicController>(
-          builder: (publicController) {
-            return ListTile(
-              onTap: () async {},
-              leading: Icon(
-                iconData,
-                color: ThemeAndColor.themeColor.withOpacity(0.8),
-                size: publicController.size.value * .07,
-              ),
-              title: Text(
-                name,
-                style: TextStyle(
-                    color: Colors.grey.shade900,
-                    fontWeight: FontWeight.w500,
-                    fontSize: publicController.size.value * .04),
-              ),
-              trailing: Icon(
-                LineAwesomeIcons.angle_right,
-                color: Colors.grey,
-                size: publicController.size.value * .06,
-              ),
-            );
-          }
-      );
+  Widget _functionBuilder(String name, IconData iconData) =>
+      GetBuilder<PublicController>(builder: (publicController) {
+        return ListTile(
+          onTap: () async {},
+          leading: Icon(
+            iconData,
+            color: ThemeAndColor.themeColor.withOpacity(0.8),
+            size: publicController.size.value * .07,
+          ),
+          title: Text(
+            name,
+            style: TextStyle(
+                color: Colors.grey.shade900,
+                fontWeight: FontWeight.w500,
+                fontSize: publicController.size.value * .04),
+          ),
+          trailing: Icon(
+            LineAwesomeIcons.angle_right,
+            color: Colors.grey,
+            size: publicController.size.value * .06,
+          ),
+        );
+      });
 }
