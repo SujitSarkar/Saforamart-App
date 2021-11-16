@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/controller/public_controller.dart';
+import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'home_nav.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -10,7 +11,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
       extendBody: true,
       body: Container(
         alignment: Alignment.center,
-        color: Colors.blue.withOpacity(0.1),
+        color: const Color(0xFF231f54),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Image.asset('assets/logo.png'),

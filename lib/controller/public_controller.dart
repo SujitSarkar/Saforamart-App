@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PublicController extends GetxController{
-
+class PublicController extends GetxController {
   RxBool isPhone = true.obs;
   SharedPreferences? preferences;
   RxDouble size = 0.0.obs;
@@ -20,7 +19,7 @@ class PublicController extends GetxController{
 
     if (isPhone.value) {
       size(MediaQuery.of(Get.context!).size.width);
-    }else {
+    } else {
       size(MediaQuery.of(Get.context!).size.height);
     }
     update();
@@ -29,4 +28,14 @@ class PublicController extends GetxController{
     print("Data Initialized !!!");
   }
 
+  List<Widget> imageSlider = [
+    Image.network(
+      'http://saforamart.glamworlditltd.com/admin/slide_show/1636200656282311pexels-photo-3872406.jpeg',
+      fit: BoxFit.cover,
+    ),
+    Image.network(
+      'http://saforamart.glamworlditltd.com/admin/slide_show/1636200543174357pexels-photo-1656666.jpeg',
+      fit: BoxFit.cover,
+    ),
+  ];
 }
