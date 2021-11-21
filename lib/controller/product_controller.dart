@@ -48,4 +48,6 @@ class ProductController extends GetxController {
   List<Product> get items {
     return [..._items];
   }
+
+  int currentProductIndex = 0;
 }

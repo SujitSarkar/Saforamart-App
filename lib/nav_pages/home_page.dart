@@ -77,17 +77,8 @@ class _HomePageState extends State<HomePage>
               SizedBox(
                 height: publicController.size.value * 0.02,
               ),
-              // const Text(
-              //   "Popular Departments",
-              //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              //   textAlign: TextAlign.start,
-              // ),
-              const MainGridView(),
 
-              // SizedBox(
-              //     height: publicController.size.value,
-              //     width: publicController.size.value,
-              //     child: nestedScrollView()),
+              const MainGridView(),
               SizedBox(
                 height: publicController.size.value * .02,
               ),
@@ -105,51 +96,11 @@ class _HomePageState extends State<HomePage>
               SizedBox(
                 height: publicController.size.value * 0.02,
               ),
-              SizedBox(
-                width: publicController.size.value,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(children: [
-                        const Text(
-                          "Electronics",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: const [
-                              Text(
-                                "More Product",
-                                style: TextStyle(fontSize: 10),
-                              ),
-                              Icon(Icons.arrow_forward),
-                            ],
-                          ),
-                        ),
-                      ]),
-                    ),
-                    SizedBox(height: 150, child: CategoryWiseProduct()),
-                  ],
-                ),
-              ),
+              CategoryWiseProduct(categoryTitle: "Electronics"),
               SizedBox(
                 height: publicController.size.value * 0.02,
               ),
-              SizedBox(
-                width: publicController.size.value,
-                child: ExpansionTile(
-                  title: const Text(
-                    "Cooking Essential",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                  children: [
-                    SizedBox(height: 150, child: CategoryWiseProduct()),
-                  ],
-                ),
-              ),
+              CategoryWiseProduct(categoryTitle: "Cooking Essential"),
             ],
           ),
         ),
