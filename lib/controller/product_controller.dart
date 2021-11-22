@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/models/product.dart';
 
@@ -50,4 +51,14 @@ class ProductController extends GetxController {
   }
 
   int currentProductIndex = 0;
+
+  TextEditingController reviewController = TextEditingController();
+  TextEditingController qaController = TextEditingController();
+  Function? reviewButtonPress() {
+    print("reviewButtonPress pressed...");
+  }
+
+  Function? qaButtonPress() {
+    print("reviewButtonPress pressed...");
+  }
 }

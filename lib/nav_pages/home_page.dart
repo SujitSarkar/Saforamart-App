@@ -11,7 +11,7 @@ import 'package:safora_mart/widget_tile/banner_image.dart';
 import 'package:safora_mart/widget_tile/category_wise_product.dart';
 import 'package:safora_mart/widget_tile/drawer.dart';
 import 'package:safora_mart/widget_tile/home_app_bar.dart';
-import 'package:safora_mart/widget_tile/main_grid_view.dart';
+import 'package:safora_mart/widget_tile/home_grid_view.dart';
 import 'package:safora_mart/widget_tile/product_grid.dart';
 
 class HomePage extends StatefulWidget {
@@ -47,9 +47,9 @@ class _HomePageState extends State<HomePage>
     ),
   ];
 
+  final PublicController publicController = Get.find();
   @override
   Widget build(BuildContext context) {
-    final PublicController publicController = Get.find();
     // final size = publicController.size.value;
     return SafeArea(
       child: Scaffold(
@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage>
                 height: publicController.size.value * 0.02,
               ),
 
-              const MainGridView(),
+              const HomeGridView(),
               SizedBox(
                 height: publicController.size.value * .02,
               ),
@@ -96,11 +96,42 @@ class _HomePageState extends State<HomePage>
               SizedBox(
                 height: publicController.size.value * 0.02,
               ),
-              CategoryWiseProduct(categoryTitle: "Electronics"),
+              const CategoryWiseProduct(categoryTitle: "Electronics"),
               SizedBox(
                 height: publicController.size.value * 0.02,
               ),
-              CategoryWiseProduct(categoryTitle: "Cooking Essential"),
+              const CategoryWiseProduct(categoryTitle: "Health & Beauty"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Cooking Essential"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Fruits and Vegetable"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Fashion"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Organic"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Games"),
+              SizedBox(
+                height: publicController.size.value * 0.08,
+              ),
+              const Text(
+                "Popular Brands",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              brandSlider(publicController),
+              SizedBox(
+                height: publicController.size.value * 0.08,
+              ),
             ],
           ),
         ),
@@ -129,4 +160,55 @@ class _HomePageState extends State<HomePage>
       ),
     );
   }
+
+  Widget brandSlider(PublicController publicController) {
+    return SizedBox(
+      width: publicController.size.value,
+      height: publicController.size.value * .45,
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(
+            Radius.circular(publicController.size.value * .02)),
+        child: Swiper(
+          controller: SwiperController(),
+          viewportFraction: 0.4,
+          scale: 0.9,
+          itemCount: publicController.brandSlider.length,
+          itemBuilder: (BuildContext context, int index) {
+            return brandBannerStructure(
+                publicController.brandSlider[index]["img"],
+                publicController.brandSlider[index]["name"]);
+          },
+          pagination: const SwiperPagination(
+            builder: DotSwiperPaginationBuilder(
+              color: Colors.grey,
+            ),
+          ),
+          control: const SwiperControl(),
+          autoplay: true,
+        ),
+      ),
+    );
+  }
+
+  Container brandBannerStructure(String? img, String? brand) => Container(
+        margin: EdgeInsets.symmetric(
+            horizontal: publicController.size.value * 0.02),
+        padding: EdgeInsets.only(bottom: publicController.size.value * 0.08),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(publicController.size.value * 0.5)),
+              height: publicController.size.value * 0.25,
+              child: Image.network(
+                img!,
+              ),
+            ),
+            Text(brand!),
+            const SizedBox(height: 5),
+          ],
+        ),
+      );
 }

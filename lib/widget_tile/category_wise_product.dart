@@ -23,7 +23,7 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
   var productIndex = 0;
 
   pressCallBack() {
-    Get.to(ProductDetailPage());
+    Get.to(() => ProductDetailPage());
   }
 
   @override
@@ -43,12 +43,16 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
+                  children: [
                     Text(
                       "More Product",
-                      style: TextStyle(fontSize: 10),
+                      style: TextStyle(
+                          fontSize: _publicController.size.value * 0.04),
                     ),
-                    Icon(Icons.arrow_forward),
+                    Icon(
+                      Icons.arrow_forward,
+                      size: _publicController.size.value * 0.05,
+                    ),
                   ],
                 ),
               ),

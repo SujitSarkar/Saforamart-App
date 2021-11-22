@@ -4,14 +4,14 @@ import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/static_variavles/app_tabs.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 
-class MainGridView extends StatefulWidget {
-  const MainGridView({Key? key}) : super(key: key);
+class HomeGridView extends StatefulWidget {
+  const HomeGridView({Key? key}) : super(key: key);
 
   @override
-  State<MainGridView> createState() => _MainGridViewState();
+  State<HomeGridView> createState() => _HomeGridViewState();
 }
 
-class _MainGridViewState extends State<MainGridView>
+class _HomeGridViewState extends State<HomeGridView>
     with SingleTickerProviderStateMixin {
   // late final ScrollController _scrollController;
 
