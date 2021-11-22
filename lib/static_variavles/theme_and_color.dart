@@ -22,11 +22,12 @@ class ThemeAndColor {
     Color(0xff7A5AB5),
     Color(0xff00D099),
     Color(0xff0094D4),
-    Color(0xFFff9933),
   ];
 
   static Color greyColor = Colors.grey;
   static Color whiteColor = Colors.white;
+  static Color blackColor = Colors.black87;
+  static const Color secondaryColor = Color(0xFFff9933);
 
   static final appTheme = ThemeData(
       primarySwatch: const MaterialColor(0xff096799, themeMapColor),

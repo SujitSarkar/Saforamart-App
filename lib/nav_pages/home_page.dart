@@ -7,8 +7,12 @@ import 'package:get/get.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/static_variavles/app_tabs.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
+import 'package:safora_mart/widget_tile/banner_image.dart';
+import 'package:safora_mart/widget_tile/category_wise_product.dart';
 import 'package:safora_mart/widget_tile/drawer.dart';
 import 'package:safora_mart/widget_tile/home_app_bar.dart';
+import 'package:safora_mart/widget_tile/home_grid_view.dart';
+import 'package:safora_mart/widget_tile/product_grid.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,19 +25,31 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
-  late final ScrollController _scrollController;
-  late final TabController _tabController;
+  List<Widget> imageSliderHome = [
+    bannerImage(
+      img: "assets/1-1.jpg",
+      firstLinetext1: "Get up to ",
+      firstLinetext2: "20% OFF",
+      secondLinetext: "SPORTS OUTFITS",
+      thirdLinetext: "Collection",
+      fourthLinetext1: "Starting at ",
+      fourthLinetext2: "\$170.00",
+      isDark: false,
+    ),
+    bannerImage(
+      img: "assets/1-2.jpg",
+      firstLinetext1: "New Arrivals",
+      secondLinetext: "ACCESSORIES",
+      thirdLinetext: "Collection",
+      fourthLinetext1: "Only From ",
+      fourthLinetext2: "\$90.00",
+      isDark: true,
+    ),
+  ];
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 4, vsync: this);
-    _scrollController = ScrollController();
-  }
-
+  final PublicController publicController = Get.find();
   @override
   Widget build(BuildContext context) {
-    final PublicController publicController = Get.find();
     // final size = publicController.size.value;
     return SafeArea(
       child: Scaffold(
@@ -59,74 +75,62 @@ class _HomePageState extends State<HomePage>
               ///Banner
               bannerSlider(publicController),
               SizedBox(
-                height: publicController.size.value * 0.1,
+                height: publicController.size.value * 0.02,
               ),
-              secondImage(publicController),
-              SizedBox(
-                height: publicController.size.value * 0.1,
-              ),
-              thirdImage(publicController),
-              SizedBox(
-                height: publicController.size.value * 0.1,
-              ),
-              const Text(
-                "Popular Departments",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                textAlign: TextAlign.start,
-              ),
-              // Expanded(
-              //   child: NestedScrollView(
-              //     controller: _scrollController,
-              //     headerSliverBuilder: (BuildContext context, bool isScroll) {
-              //       return [
-              //         SliverAppBar(
-              //           pinned: true,
-              //           bottom: PreferredSize(
-              //             preferredSize: const Size.fromHeight(50),
-              //             child: TabBar(
-              //               controller: _tabController,
-              //               isScrollable: true,
-              //               indicatorPadding: const EdgeInsets.all(0),
-              //               indicatorSize: TabBarIndicatorSize.label,
-              //               labelPadding: const EdgeInsets.only(right: 10),
-              //               indicator: BoxDecoration(
-              //                   borderRadius: BorderRadius.circular(10),
-              //                   boxShadow: [
-              //                     BoxShadow(
-              //                       color: Colors.grey.withOpacity(0.2),
-              //                       blurRadius: 7,
-              //                       offset: const Offset(0, 0),
-              //                     )
-              //                   ]),
-              //               tabs: const [
-              //                 AppTabs(text: "New Arrivals"),
-              //                 AppTabs(text: "Best Seller"),
-              //                 AppTabs(text: "Most Populer"),
-              //                 AppTabs(text: "Feature"),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //       ];
-              //     },
-              //     body: TabBarView(
-              //       controller: _tabController,
-              //       children: [
-              //         Container(),
-              //         Container(),
-              //         Container(),
-              //         Container(),
-              //       ],
-              //     ),
-              //   ),
-              // ),
+
+              const HomeGridView(),
               SizedBox(
                 height: publicController.size.value * .02,
               ),
               Container(
                 width: publicController.size.value,
-                height: publicController.size.value,
-                color: Theme.of(context).primaryColor,
+                height: publicController.size.value * 0.5,
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(publicController.size.value * .02),
+                  image: const DecorationImage(
+                      image: AssetImage("assets/banner.jpg"),
+                      fit: BoxFit.cover),
+                ),
+              ),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Electronics"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Health & Beauty"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Cooking Essential"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Fruits and Vegetable"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Fashion"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Organic"),
+              SizedBox(
+                height: publicController.size.value * 0.02,
+              ),
+              const CategoryWiseProduct(categoryTitle: "Games"),
+              SizedBox(
+                height: publicController.size.value * 0.08,
+              ),
+              const Text(
+                "Popular Brands",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              brandSlider(publicController),
+              SizedBox(
+                height: publicController.size.value * 0.08,
               ),
             ],
           ),
@@ -143,7 +147,7 @@ class _HomePageState extends State<HomePage>
         child: Swiper(
           itemCount: publicController.imageSlider.length,
           itemBuilder: (BuildContext context, int index) {
-            return publicController.imageSlider[index];
+            return imageSliderHome[index];
           },
           pagination: const SwiperPagination(
             builder: DotSwiperPaginationBuilder(
@@ -157,145 +161,54 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget secondImage(PublicController publicController) {
-    return Container(
+  Widget brandSlider(PublicController publicController) {
+    return SizedBox(
       width: publicController.size.value,
-      height: publicController.size.value * .4,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-            "assets/1-1.jpg",
+      height: publicController.size.value * .45,
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(
+            Radius.circular(publicController.size.value * .02)),
+        child: Swiper(
+          controller: SwiperController(),
+          viewportFraction: 0.4,
+          scale: 0.9,
+          itemCount: publicController.brandSlider.length,
+          itemBuilder: (BuildContext context, int index) {
+            return brandBannerStructure(
+                publicController.brandSlider[index]["img"],
+                publicController.brandSlider[index]["name"]);
+          },
+          pagination: const SwiperPagination(
+            builder: DotSwiperPaginationBuilder(
+              color: Colors.grey,
+            ),
           ),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(publicController.size.value * .03),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: const [
-                Text("Get up to "),
-                Text(
-                  "20% OFF",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFff9933),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  "SPORTS OUTFITS",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  "Collection",
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  "Starting at ",
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: ThemeAndColor.greyColor,
-                  ),
-                ),
-                Text(
-                  "\$170.00",
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: ThemeAndColor.starColorList[5].withOpacity(0.8),
-                  ),
-                ),
-              ],
-            ),
-          ],
+          control: const SwiperControl(),
+          autoplay: true,
         ),
       ),
     );
   }
 
-  Widget thirdImage(PublicController publicController) {
-    return Container(
-      width: publicController.size.value,
-      height: publicController.size.value * .4,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-            "assets/1-2.jpg",
-          ),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(publicController.size.value * .03),
+  Container brandBannerStructure(String? img, String? brand) => Container(
+        margin: EdgeInsets.symmetric(
+            horizontal: publicController.size.value * 0.02),
+        padding: EdgeInsets.only(bottom: publicController.size.value * 0.08),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "New Arrivals",
-              style: TextStyle(
-                color: ThemeAndColor.greyColor,
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(publicController.size.value * 0.5)),
+              height: publicController.size.value * 0.25,
+              child: Image.network(
+                img!,
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "ACCESSORIES",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: ThemeAndColor.whiteColor,
-                  ),
-                ),
-                Text(
-                  "Collection",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: ThemeAndColor.whiteColor,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  "Only From ",
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: ThemeAndColor.greyColor,
-                  ),
-                ),
-                Text(
-                  "\$90.00",
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: ThemeAndColor.starColorList[5],
-                  ),
-                ),
-              ],
-            ),
+            Text(brand!),
+            const SizedBox(height: 5),
           ],
         ),
-      ),
-    );
-  }
+      );
 }
