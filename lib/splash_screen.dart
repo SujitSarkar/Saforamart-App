@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
@@ -23,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final PublicController publicController = Get.put(PublicController());
     final ProductController productController = Get.put(ProductController());
+    final CartController cartController = Get.put(CartController());
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,

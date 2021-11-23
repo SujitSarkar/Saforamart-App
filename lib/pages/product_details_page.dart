@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
-import 'package:safora_mart/static_variavles/app_tabs.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/category_wise_product.dart';
 import 'package:safora_mart/widget_tile/star_builder.dart';
 
+import 'cart_page.dart';
+
 class ProductDetailPage extends StatefulWidget {
-  ProductDetailPage({Key? key}) : super(key: key);
+  const ProductDetailPage({Key? key}) : super(key: key);
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -21,6 +22,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   final PublicController _publicController = Get.find();
 
   final ProductController _productController = Get.find();
+
+  final CartController cartController = Get.find();
 
   get index => _productController.currentProductIndex;
 
@@ -53,6 +56,38 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           onPressed: () => Get.back(),
         ),
         actions: [
+          Center(
+            child: InkWell(
+              child: Stack(children: [
+                Icon(
+                  LineAwesomeIcons.shopping_cart_arrow_down,
+                  color: Colors.grey.shade800,
+                  size: _publicController.size.value * .085,
+                ),
+                Positioned(
+                  top: 0.0,
+                  right: 0.0,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding:
+                        EdgeInsets.all(_publicController.size.value * .007),
+                    decoration: const BoxDecoration(
+                        color: ThemeAndColor.themeColor,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Text(
+                      cartController.itemCount.toString(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: _publicController.size.value * .02,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    ),
+                  ),
+                )
+              ]),
+              onTap: () => Get.to(() => const CartPage()),
+            ),
+          ),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.favorite_outline_outlined,
@@ -199,7 +234,13 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                   Text("ADD TO CART"),
                 ],
               ),
-              onPressed: () {},
+              onPressed: () => cartController.addItem(
+                _productController.items[index].id,
+                _productController.items[index].price,
+                _productController.items[index].productTitle,
+                1,
+                _productController.items[index].imageUrl,
+              ),
             ),
           ),
         ),

@@ -26,7 +26,7 @@ class ThemeAndColor {
 
   static Color greyColor = Colors.grey;
   static Color whiteColor = Colors.white;
-  static Color blackColor = Colors.black87;
+  static Color blackColor = Colors.black45;
   static const Color secondaryColor = Color(0xFFff9933);
 
   static final appTheme = ThemeData(

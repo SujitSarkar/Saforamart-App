@@ -14,27 +14,27 @@ class HomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final PublicController publicController = Get.find();
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           InkWell(
-              onTap: () =>scaffoldKey!.currentState!.openDrawer(),
-              child: Icon(LineAwesomeIcons.bars,color: Colors.grey.shade800,
+              onTap: () => scaffoldKey!.currentState!.openDrawer(),
+              child: Icon(LineAwesomeIcons.bars,
+                  color: Colors.grey.shade800,
                   size: publicController.size.value * .08)),
           const SizedBox(width: 8.0),
-
           Expanded(
             child: InkWell(
               onTap: () {},
               borderRadius: const BorderRadius.all(Radius.circular(50)),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(50)),
-                    border:
-                    Border.all(width: 1, color: Colors.grey.shade400)),
+                    border: Border.all(width: 1, color: Colors.grey.shade400)),
                 child: Row(
                   children: [
                     const Icon(Icons.search, color: Colors.grey),
@@ -52,7 +52,6 @@ class HomeAppBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8.0),
-
           InkWell(
             child: Stack(children: [
               Icon(
@@ -80,10 +79,9 @@ class HomeAppBar extends StatelessWidget {
                 ),
               )
             ]),
-            onTap: ()=>Get.to(()=>const CartPage()),
+            onTap: () => Get.to(() => const CartPage()),
           ),
           const SizedBox(width: 8.0),
-
           InkWell(
             child: Stack(children: [
               Icon(
@@ -111,7 +109,7 @@ class HomeAppBar extends StatelessWidget {
                 ),
               )
             ]),
-            onTap: ()=>Get.to(()=>const CartPage()),
+            onTap: () => Get.to(() => const CartPage()),
           )
         ],
       ),
