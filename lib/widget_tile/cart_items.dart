@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/controller/cart_controller.dart';
+import 'package:safora_mart/static_variavles/theme_and_color.dart';
 
 class CartItem extends StatelessWidget {
   final String id;
@@ -45,16 +48,29 @@ class CartItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: ListTile(
-            leading: Chip(
-              label: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text('₦$price'),
-              ),
-              backgroundColor: Theme.of(context).colorScheme.primary,
+            leading: Container(
+              child: Image.network(productImg),
             ),
             title: Text(title),
-            subtitle: Text("Total: ₦${price * quantity}"),
-            trailing: Text("$quantity X"),
+            subtitle: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Chip(
+                  label: Text(
+                    '\u{09F3}$price',
+                    style: TextStyle(color: ThemeAndColor.whiteColor),
+                  ),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                Text("In Total: \u{09F3}${price * quantity}"),
+              ],
+            ),
+            trailing: Column(
+              children: [
+                Text("$quantity X"),
+              ],
+            ),
           ),
         ),
       ),

@@ -8,7 +8,7 @@ class CartItem {
   CartItem(
       {required this.id,
       required this.productTitle,
-      required this.productQuantity,
+      this.productQuantity = 0,
       required this.productPrice,
       required this.productImg});
 }

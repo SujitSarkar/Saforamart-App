@@ -7,16 +7,16 @@ class WishListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PublicController publicController =Get.find();
+    final PublicController publicController = Get.find();
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.grey),
-        elevation: 0.0,
-        title: const Text('Category',style: TextStyle(color: Colors.black)),
-      ),
-      body: Container()
-    );
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.grey),
+          elevation: 0.0,
+          title:
+              const Text('WishListPage', style: TextStyle(color: Colors.black)),
+        ),
+        body: Container());
   }
 }

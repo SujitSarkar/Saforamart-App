@@ -50,9 +50,49 @@ class CartController extends GetxController {
     update();
   }
 
+  int itemAmount(int productId) {
+    int amount = 0;
+    _items.forEach((key, value) {
+      if (key == productId) {
+        amount = value.productQuantity;
+      }
+    });
+    return amount;
+  }
+
   void removeitem(int productId) {
     _items.remove(productId);
     update();
+  }
+
+  void increaseQuantity(int productId) {
+    if (_items.containsKey(productId)) {
+      _items.update(
+        productId,
+        (value) => CartItem(
+          id: value.id,
+          productTitle: value.productTitle,
+          productQuantity: value.productQuantity + 1,
+          productPrice: value.productPrice,
+          productImg: value.productImg,
+        ),
+      );
+    }
+  }
+
+  void decreaseQuantity(int productId) {
+    if (_items.containsKey(productId)) {
+      _items.update(
+        productId,
+        (value) => CartItem(
+          id: value.id,
+          productTitle: value.productTitle,
+          productQuantity: value.productQuantity - 1,
+          productPrice: value.productPrice,
+          productImg: value.productImg,
+        ),
+      );
+    }
   }
 
   void clear() {

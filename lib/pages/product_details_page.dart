@@ -6,6 +6,7 @@ import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/category_wise_product.dart';
+import 'package:safora_mart/widget_tile/productAmountInc.dart';
 import 'package:safora_mart/widget_tile/star_builder.dart';
 
 import 'cart_page.dart';
@@ -57,6 +58,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
         ),
         actions: [
           Center(
+            //Cart Functionality...
             child: InkWell(
               child: Stack(children: [
                 Icon(
@@ -74,13 +76,18 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                     decoration: const BoxDecoration(
                         color: ThemeAndColor.themeColor,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Text(
-                      cartController.itemCount.toString(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: _publicController.size.value * .02,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
+                    child: GetBuilder<CartController>(
+                      init: CartController(),
+                      builder: (_) {
+                        return Text(
+                          cartController.itemCount.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: _publicController.size.value * .02,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        );
+                      },
                     ),
                   ),
                 )
@@ -227,21 +234,23 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           child: Container(
             margin: EdgeInsets.only(left: _publicController.size.value * 0.01),
             child: ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(LineAwesomeIcons.shopping_bag),
-                  Text("ADD TO CART"),
-                ],
-              ),
-              onPressed: () => cartController.addItem(
-                _productController.items[index].id,
-                _productController.items[index].price,
-                _productController.items[index].productTitle,
-                1,
-                _productController.items[index].imageUrl,
-              ),
-            ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(LineAwesomeIcons.shopping_bag),
+                    Text("ADD TO CART"),
+                  ],
+                ),
+                onPressed: () {
+                  cartController.addItem(
+                    _productController.items[index].id,
+                    _productController.items[index].price,
+                    _productController.items[index].productTitle,
+                    1,
+                    _productController.items[index].imageUrl,
+                  );
+                  print("Product added to Cart...");
+                }),
           ),
         ),
       ],
@@ -388,30 +397,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             height: _publicController.size.value * .05,
           ),
           //Product price and amount
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.remove_circle,
-                  size: _publicController.size.value * .08,
-                ),
-              ),
-              Text(
-                "1",
-                style: TextStyle(
-                    fontSize: _publicController.size.value * .05,
-                    fontWeight: FontWeight.w600,
-                    decoration: TextDecoration.underline),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.add_circle,
-                  size: _publicController.size.value * .08,
-                ),
-              ),
-            ],
+          ProductAmountInc(
+            productId: _productController.items[index].id,
           ),
         ],
       );

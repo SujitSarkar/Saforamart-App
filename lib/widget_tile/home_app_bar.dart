@@ -1,14 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/pages/cart_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 
 class HomeAppBar extends StatelessWidget {
   final GlobalKey<ScaffoldState>? scaffoldKey;
-  const HomeAppBar({Key? key, this.scaffoldKey}) : super(key: key);
+  HomeAppBar({Key? key, this.scaffoldKey}) : super(key: key);
+
+  final CartController cartController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +70,18 @@ class HomeAppBar extends StatelessWidget {
                   decoration: const BoxDecoration(
                       color: ThemeAndColor.themeColor,
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: Text(
-                    '9+',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: publicController.size.value * .02,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white),
+                  child: GetBuilder<CartController>(
+                    init: CartController(),
+                    builder: (_) {
+                      return Text(
+                        cartController.itemCount.toString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: publicController.size.value * .02,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      );
+                    },
                   ),
                 ),
               )

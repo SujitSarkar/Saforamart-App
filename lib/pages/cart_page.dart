@@ -86,6 +86,7 @@ class _CartPageState extends State<CartPage> {
                 itemCount: cartController.items.length,
                 itemBuilder: (context, index) => CartItem(
                   id: cartController.items.values.toList()[index].id,
+                  productId: cartController.items.keys.toList()[index],
                   price:
                       cartController.items.values.toList()[index].productPrice,
                   quantity: cartController.items.values
@@ -93,7 +94,8 @@ class _CartPageState extends State<CartPage> {
                       .productQuantity,
                   title:
                       cartController.items.values.toList()[index].productTitle,
-                  productId: cartController.items.keys.toList()[index],
+                  productImg:
+                      cartController.items.values.toList()[index].productImg,
                 ),
               ),
             ),
