@@ -10,7 +10,7 @@ class Widgets {
   static final List<Widget> mainNavBodyList = [
     const HomePage(),
     CategoryPage(),
-    const WishListPage(),
+    WishListPage(),
     AccountPage(),
   ];
 

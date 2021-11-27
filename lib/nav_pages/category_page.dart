@@ -34,7 +34,7 @@ class _CategoryPageState extends State<CategoryPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: tabBarList.length, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -43,9 +43,26 @@ class _CategoryPageState extends State<CategoryPage>
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(60.0),
-          child: HomeAppBar(scaffoldKey: _scaffoldKey),
+        appBar: AppBar(
+          backgroundColor: ThemeAndColor.whiteColor,
+          iconTheme: const IconThemeData(color: Colors.grey),
+          elevation: 1.0,
+          bottom: TabBar(
+            controller: _tabController,
+            labelColor: ThemeAndColor.blackColor,
+            labelPadding: EdgeInsets.all(_publicController.size.value * 0.03),
+            labelStyle: TextStyle(
+                fontWeight: FontWeight.w900,
+                fontSize: _publicController.size.value * 0.04),
+            unselectedLabelColor: ThemeAndColor.blackColor.withOpacity(0.6),
+            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
+            isScrollable: true,
+            tabs: [
+              Text("All Categories"),
+              Text("Electronics"),
+              Text("Health & Beauty"),
+            ],
+          ),
         ),
         drawer: const NavigationDrawer(),
         body: _bodyUI(_publicController),
@@ -83,7 +100,11 @@ class _CategoryPageState extends State<CategoryPage>
               width: MediaQuery.of(context).size.width,
               child: TabBarView(
                 controller: _tabController,
-                children: [...tabBarList],
+                children: [
+                  Text("All Categories"),
+                  Text("Electronics"),
+                  Text("Health & Beauty"),
+                ],
               ),
             ),
           ],

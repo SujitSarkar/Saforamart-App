@@ -42,9 +42,9 @@ class ThemeAndColor {
       canvasColor: Colors.transparent,
       textTheme: const TextTheme(
         headline1: TextStyle(
-            fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 18),
+            fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 22),
         headline2: TextStyle(
-            fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 16),
+            fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 18),
         headline3: TextStyle(
             fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 14),
         headline4: TextStyle(

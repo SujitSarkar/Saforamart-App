@@ -25,16 +25,7 @@ class CartController extends GetxController {
   void addItem(
       int productId, double price, String title, int quantity, String img) {
     if (_items.containsKey(productId)) {
-      _items.update(
-        productId,
-        (value) => CartItem(
-          id: value.id,
-          productTitle: value.productTitle,
-          productQuantity: value.productQuantity + 1,
-          productPrice: value.productPrice,
-          productImg: value.productImg,
-        ),
-      );
+      removeitem(productId);
     } else {
       _items.putIfAbsent(
         productId,

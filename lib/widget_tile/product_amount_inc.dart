@@ -27,13 +27,13 @@ class ProductAmountInc extends StatelessWidget {
                   color: ThemeAndColor.blackColor.withOpacity(0.6),
                 ),
               ),
-              Text(
-                "${controller.itemAmount(productId)}",
-                style: TextStyle(
-                    fontSize: _publicController.size.value * .05,
-                    fontWeight: FontWeight.w600,
-                    decoration: TextDecoration.underline),
-              ),
+              Obx(() => Text(
+                    "${controller.itemAmount(productId)}",
+                    style: TextStyle(
+                        fontSize: _publicController.size.value * .05,
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline),
+                  )),
               IconButton(
                 onPressed: () => controller.increaseQuantity(productId),
                 icon: Icon(Icons.add_circle,

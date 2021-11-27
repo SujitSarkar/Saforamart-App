@@ -47,7 +47,7 @@ class _CartPageState extends State<CartPage> {
                     const Spacer(),
                     Chip(
                       label: Text(
-                        '₦${cartController.TotalAmount.toStringAsFixed(2)}',
+                        '\u{09F3}${cartController.TotalAmount.toStringAsFixed(2)}',
                         style: const TextStyle(
                           color: Colors.white,
                         ),

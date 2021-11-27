@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/controller/cart_controller.dart';
+import 'package:safora_mart/pages/product_details_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 
 class CartItem extends StatelessWidget {
@@ -43,33 +44,36 @@ class CartItem extends StatelessWidget {
       onDismissed: (direction) {
         cartController.removeitem(productId);
       },
-      child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: ListTile(
-            leading: Container(
-              child: Image.network(productImg),
-            ),
-            title: Text(title),
-            subtitle: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Chip(
-                  label: Text(
-                    '\u{09F3}$price',
-                    style: TextStyle(color: ThemeAndColor.whiteColor),
+      child: GestureDetector(
+        onTap: () => Get.off(ProductDetailPage(id: productId)),
+        child: Card(
+          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: ListTile(
+              leading: Container(
+                child: Image.network(productImg),
+              ),
+              title: Text(title),
+              subtitle: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Chip(
+                    label: Text(
+                      '\u{09F3}$price',
+                      style: TextStyle(color: ThemeAndColor.whiteColor),
+                    ),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                Text("In Total: \u{09F3}${price * quantity}"),
-              ],
-            ),
-            trailing: Column(
-              children: [
-                Text("$quantity X"),
-              ],
+                  Text("In Total: \u{09F3}${price * quantity}"),
+                ],
+              ),
+              trailing: Column(
+                children: [
+                  Text("$quantity X"),
+                ],
+              ),
             ),
           ),
         ),

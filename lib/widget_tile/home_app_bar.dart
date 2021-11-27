@@ -116,7 +116,7 @@ class HomeAppBar extends StatelessWidget {
                 ),
               )
             ]),
-            onTap: () => Get.to(() => const CartPage()),
+            onTap: () {},
           )
         ],
       ),
