@@ -1,112 +1,246 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:safora_mart/controller/cart_controller.dart';
+import 'package:safora_mart/controller/category_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
+import 'package:safora_mart/pages/cart_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/drawer.dart';
-import 'package:safora_mart/widget_tile/home_app_bar.dart';
+import 'package:safora_mart/widget_tile/product_grid.dart';
 
 class CategoryPage extends StatefulWidget {
-  CategoryPage({Key? key}) : super(key: key);
+  const CategoryPage({Key? key}) : super(key: key);
 
   @override
-  State<CategoryPage> createState() => _CategoryPageState();
+  _CategoryPageState createState() => _CategoryPageState();
 }
 
 class _CategoryPageState extends State<CategoryPage>
     with SingleTickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-
-  final PublicController _publicController = PublicController();
-
-  List tabBarList = const [
-    Text("All Categories"),
-    Text("Electronics"),
-    Text("Health & Beauty"),
-    // Text("Cooking Essential"),
-    // Text("Fruits and Vegetable"),
-    // Text("Fashion"),
-    // Text("Organic"),
-    // Text("Games"),
-  ];
-
   TabController? _tabController;
+  int _tabIndex = 0;
+  final _autoSizeGroup = AutoSizeGroup();
+  int _tempSubIndex = 0;
+
+  final CategoryController _categoryController = Get.find();
+  final CartController _cartController = Get.find();
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 10, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        key: _scaffoldKey,
+    final PublicController publicController = Get.find();
+    final Size size = MediaQuery.of(context).size;
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: ThemeAndColor.whiteColor,
-          iconTheme: const IconThemeData(color: Colors.grey),
-          elevation: 1.0,
-          bottom: TabBar(
-            controller: _tabController,
-            labelColor: ThemeAndColor.blackColor,
-            labelPadding: EdgeInsets.all(_publicController.size.value * 0.03),
-            labelStyle: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: _publicController.size.value * 0.04),
-            unselectedLabelColor: ThemeAndColor.blackColor.withOpacity(0.6),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
-            isScrollable: true,
-            tabs: [
-              Text("All Categories"),
-              Text("Electronics"),
-              Text("Health & Beauty"),
-            ],
+        iconTheme: const IconThemeData(color: Colors.grey),
+        elevation: 0.0,
+        title: Text('Category',
+            style: Theme.of(context)
+                .textTheme
+                .headline2!
+                .copyWith(color: Colors.black)),
+        actions: [
+          Center(
+            child: InkWell(
+              child: Stack(children: [
+                Icon(
+                  LineAwesomeIcons.shopping_cart_arrow_down,
+                  color: Colors.grey.shade800,
+                  size: publicController.size.value * .085,
+                ),
+                Positioned(
+                  top: 0.0,
+                  right: 0.0,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(publicController.size.value * .007),
+                    decoration: const BoxDecoration(
+                        color: ThemeAndColor.themeColor,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: GetBuilder<CartController>(
+                      init: CartController(),
+                      builder: (_) {
+                        return Text(
+                          _cartController.itemCount.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: publicController.size.value * .02,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        );
+                      },
+                    ),
+                  ),
+                )
+              ]),
+              onTap: () => Get.to(() => const CartPage()),
+            ),
           ),
-        ),
-        drawer: const NavigationDrawer(),
-        body: _bodyUI(_publicController),
+          const SizedBox(width: 8.0),
+          Center(
+            child: InkWell(
+              child: Stack(children: [
+                Icon(
+                  LineAwesomeIcons.bell,
+                  color: Colors.grey.shade800,
+                  size: publicController.size.value * .085,
+                ),
+                Positioned(
+                  top: 0.0,
+                  right: 0.0,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(publicController.size.value * .007),
+                    decoration: const BoxDecoration(
+                        color: ThemeAndColor.themeColor,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Text(
+                      '9+',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: publicController.size.value * .02,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    ),
+                  ),
+                )
+              ]),
+              onTap: () {},
+            ),
+          )
+        ],
+        bottom: _tabBar(publicController),
       ),
+      drawer: NavigationDrawer(),
+      body: _bodyUI(publicController, size),
     );
   }
 
-  SingleChildScrollView _bodyUI(PublicController publicController) =>
-      SingleChildScrollView(
-        child: Column(
+  PreferredSize _tabBar(PublicController publicController) => PreferredSize(
+        preferredSize: const Size.fromHeight(25),
+        child: TabBar(
+          onTap: (covariant) async {
+            setState(() => _tabIndex = covariant);
+          },
+          isScrollable: true,
+          controller: _tabController,
+          indicator: const BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+            width: 3.5,
+            color: ThemeAndColor.themeColor,
+          ))),
+          //indicatorColor: Colors.green,
+          indicatorSize: TabBarIndicatorSize.label,
+          physics: const BouncingScrollPhysics(),
+          tabs: _categoryController.mainCategory
+              .map((cat) => Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: Text(
+                      cat,
+                      style: Theme.of(context).textTheme.headline3!.copyWith(
+                            fontSize: 14,
+                          ),
+                    ),
+                  ))
+              .toList(),
+        ),
+      );
+
+  Widget _bodyUI(PublicController publicController, Size size) => Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          ///Sidebar
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
+            width: size.width * .23,
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: 10,
+              itemBuilder: (_, index) => _sidebarTie(publicController, index),
+            ),
+          ),
+
+          ///Divider
+          Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              color: Colors.blueGrey,
+              width: 0.5),
+
+          ///Product Body
+          Expanded(
+            child: Container(
+              color: Colors.white,
+              margin:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+              child: GridView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 10.0,
+                      childAspectRatio: 0.7),
+                  itemCount: 50,
+                  itemBuilder: (_, index) => Container(
+                        padding: const EdgeInsets.all(5),
+                        color: Theme.of(context).primaryColor.withOpacity(.3),
+                        child: Text("$index"),
+                      )),
+            ),
+          ),
+        ],
+      );
+
+  Widget _sidebarTie(PublicController publicController, int index) => InkWell(
+        onTap: () {
+          setState(() => _tempSubIndex = index);
+        },
+        child: Row(
           children: [
-            SizedBox(
-              height: _publicController.size.value * 1,
+            Expanded(
+              child: Container(
+                  height: publicController.size.value * .2,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(8.0)),
+                      boxShadow: [
+                        BoxShadow(
+                            color: ThemeAndColor.themeColor.withOpacity(0.2),
+                            blurRadius: 2.0,
+                            offset: const Offset(0, 5))
+                      ]),
+                  margin: EdgeInsets.symmetric(
+                      horizontal: publicController.size.value * .015,
+                      vertical: publicController.size.value * .015),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: publicController.size.value * .015,
+                      vertical: publicController.size.value * .015),
+                  child: AutoSizeText(
+                    "${_categoryController.subCategory[index]} $index",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey.shade900),
+                    group: _autoSizeGroup,
+                  )),
             ),
-            SizedBox(
-              height: _publicController.size.value * 0.12,
-              width: MediaQuery.of(context).size.width,
-              child: TabBar(
-                controller: _tabController,
-                labelColor: ThemeAndColor.blackColor,
-                labelPadding:
-                    EdgeInsets.all(_publicController.size.value * 0.03),
-                labelStyle: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: _publicController.size.value * 0.04),
-                unselectedLabelColor: ThemeAndColor.blackColor.withOpacity(0.6),
-                unselectedLabelStyle:
-                    const TextStyle(fontWeight: FontWeight.w500),
-                isScrollable: false,
-                tabs: [...tabBarList],
+            Visibility(
+              visible: index == _tempSubIndex ? true : false,
+              child: Container(
+                height: publicController.size.value * .2,
+                width: 3,
+                color: ThemeAndColor.themeColor,
               ),
-            ),
-            SizedBox(
-              height: _publicController.size.value * 0.5,
-              width: MediaQuery.of(context).size.width,
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  Text("All Categories"),
-                  Text("Electronics"),
-                  Text("Health & Beauty"),
-                ],
-              ),
-            ),
+            )
           ],
         ),
       );

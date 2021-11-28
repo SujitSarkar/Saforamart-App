@@ -1,24 +1,25 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:safora_mart/controller/public_controller.dart';
-import 'package:safora_mart/models/order.dart';
+import 'package:safora_mart/controller/user_controller.dart';
 import 'package:safora_mart/pages/edit_profile.dart';
 import 'package:safora_mart/pages/order_page.dart';
+import 'package:safora_mart/pages/payment_method.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/drawer.dart';
 
 class AccountPage extends StatelessWidget {
   AccountPage({Key? key}) : super(key: key);
   final PublicController _publicController = Get.find();
+  final UserController _userController = Get.find();
 
   var profileSetting = [
     'Edit Profile',
     'App Settings',
     'Shipping Address',
     'Order History',
+    "Payment Methods",
     'Cards',
   ];
 
@@ -27,6 +28,7 @@ class AccountPage extends StatelessWidget {
     Icons.settings,
     FontAwesomeIcons.mapMarker,
     FontAwesomeIcons.clipboard,
+    FontAwesomeIcons.moneyBillAlt,
     Icons.credit_card,
   ];
 
@@ -37,6 +39,9 @@ class AccountPage extends StatelessWidget {
         break;
       case 3:
         Get.to(() => OrderScreen());
+        break;
+      case 4:
+        Get.to(() => PaymentMethodPage());
         break;
       default:
         break;
@@ -69,21 +74,8 @@ class AccountPage extends StatelessWidget {
         width: _publicController.size.value,
         child: Column(
           children: [
-            // Container(
-            //   width: _publicController.size.value,
-            //   height: _publicController.size.value,
-            //   child: const CircleAvatar(
-            //     foregroundImage: NetworkImage(
-            //       "https://i.pinimg.com/originals/d5/b0/4c/d5b04cc3dcd8c17702549ebc5f1acf1a.png",
-            //     ),
-            //     backgroundImage: NetworkImage(
-            //       "http://www.mcicon.com/wp-content/uploads/2021/02/Technology_Camera_1-copy-25.jpg",
-            //       scale: .5,
-            //     ),
-            //   ),
-            // ),
             Container(
-              margin: EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(10.0),
               width: _publicController.size.value * 0.6,
               height: _publicController.size.value * 0.6,
               decoration: BoxDecoration(
@@ -101,9 +93,8 @@ class AccountPage extends StatelessWidget {
                 ),
               ),
             ),
-
             Text(
-              "User Name.",
+              "${_userController.user['firstName']} ${_userController.user['lastName']}",
               style: Theme.of(context)
                   .textTheme
                   .headline1!

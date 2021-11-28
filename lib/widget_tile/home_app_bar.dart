@@ -4,6 +4,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/pages/cart_page.dart';
+import 'package:safora_mart/pages/search_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -29,7 +30,7 @@ class HomeAppBar extends StatelessWidget {
           const SizedBox(width: 8.0),
           Expanded(
             child: InkWell(
-              onTap: () {},
+              onTap: () => Get.to(() => SearchPage()),
               borderRadius: const BorderRadius.all(Radius.circular(50)),
               child: Container(
                 padding:

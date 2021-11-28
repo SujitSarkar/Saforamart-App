@@ -66,6 +66,10 @@ class ProductController extends GetxController {
     return _items.firstWhere((element) => element.id == id);
   }
 
+  List<Product> findProductByName(String name) {
+    return _items.where((element) => element.id == int.parse(name)).toList();
+  }
+
   void toggleFavouriteStatus(int id) {
     _items[id].isFavourite = !_items[id].isFavourite;
     update();

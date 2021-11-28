@@ -1,19 +1,41 @@
+import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/controller/user_controller.dart';
+import 'package:safora_mart/models/country.dart';
 import 'package:safora_mart/models/user.dart';
 import 'package:safora_mart/static_variavles/form_decoration.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
+import 'package:safora_mart/widget_tile/text_field_edit_profile.dart';
 
-class EditProfile extends StatelessWidget {
+class EditProfile extends StatefulWidget {
   EditProfile({Key? key}) : super(key: key);
 
+  @override
+  State<EditProfile> createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
   final PublicController _publicController = Get.find();
 
   final UserController _userController = Get.find();
 
   late Map<String, dynamic> _user;
+
+  TextEditingController firstNameController = TextEditingController();
+
+  TextEditingController lasstNameController = TextEditingController();
+
+  TextEditingController phoneController = TextEditingController();
+
+  TextEditingController addressController = TextEditingController();
+
+  TextEditingController emailController = TextEditingController();
+
+  late String countryName = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,132 +64,170 @@ class EditProfile extends StatelessWidget {
               _user = _userController.user;
             },
             builder: (_) {
-              return Column(
-                children: [
-                  Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.all(10.0),
-                        width: _publicController.size.value * 0.6,
-                        height: _publicController.size.value * 0.6,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                              _publicController.size.value / 2),
-                          border: Border.all(
-                            color: Theme.of(context).primaryColorLight,
-                            width: 2.2,
-                          ),
-                          image: const DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                              "https://i.pinimg.com/originals/d5/b0/4c/d5b04cc3dcd8c17702549ebc5f1acf1a.png",
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.all(10.0),
+                          width: _publicController.size.value * 0.6,
+                          height: _publicController.size.value * 0.6,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                _publicController.size.value / 2),
+                            border: Border.all(
+                              color: Theme.of(context).primaryColorLight,
+                              width: 2.2,
                             ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: _publicController.size.value / 12,
-                        left: _publicController.size.value / 5.5,
-                        child: SizedBox(
-                          height: _publicController.size.value / 15,
-                          child: Opacity(
-                            opacity: 1,
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Image.asset(
-                                'assets/images/camera-icon.png',
-                                fit: BoxFit.contain,
-                                width: _publicController.size.value * 0.3,
-                                height: _publicController.size.value * 0.3,
+                            image: const DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                "https://i.pinimg.com/originals/d5/b0/4c/d5b04cc3dcd8c17702549ebc5f1acf1a.png",
                               ),
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: _publicController.size.value * 0.04),
-                    child: Row(
+                        Positioned(
+                          bottom: _publicController.size.value / 12,
+                          left: _publicController.size.value / 5.5,
+                          child: SizedBox(
+                            height: _publicController.size.value / 15,
+                            child: Opacity(
+                              opacity: 1,
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: Image.asset(
+                                  'assets/images/camera-icon.png',
+                                  fit: BoxFit.contain,
+                                  width: _publicController.size.value * 0.3,
+                                  height: _publicController.size.value * 0.3,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
                       children: [
                         Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: const UnderlineInputBorder(),
-                                labelText: "${_user['firstName']}",
-                                suffixIcon: Icon(Icons.edit)),
+                          child: TextFieldEdit(
+                            controller: firstNameController,
+                            text: _user['firstName'],
                           ),
                         ),
                         SizedBox(
                           width: _publicController.size.value * 0.04,
                         ),
                         Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: const UnderlineInputBorder(),
-                                labelText: "${_user['lastName']}",
-                                suffixIcon: Icon(Icons.edit)),
+                          child: TextFieldEdit(
+                            controller: lasstNameController,
+                            text: _user['lastName'],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: _publicController.size.value * 0.07,
-                  ),
-                  ExpansionTile(
-                    expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                    title: Text(
-                      "Change Password",
-                      style: Theme.of(context).textTheme.headline5!.copyWith(
-                            fontSize: _publicController.size.value * 0.04,
-                          ),
+                    SizedBox(
+                      height: _publicController.size.value * 0.07,
                     ),
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: SizedBox(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: _publicController.size.value * 0.03,
-                                ),
-                                TextField(
-                                  decoration: FormDecoration.formDecoration(
-                                      _publicController.size.value,
-                                      "Current Password"),
-                                ),
-                                SizedBox(
-                                  height: _publicController.size.value * 0.03,
-                                ),
-                                TextField(
-                                  decoration: FormDecoration.formDecoration(
-                                      _publicController.size.value,
-                                      "New Password"),
-                                ),
-                                SizedBox(
-                                  height: _publicController.size.value * 0.03,
-                                ),
-                                TextField(
-                                  decoration: FormDecoration.formDecoration(
-                                      _publicController.size.value,
-                                      "Repeat New assword"),
-                                ),
-                                SizedBox(
-                                  height: _publicController.size.value * 0.03,
-                                ),
-                                OutlinedButton(
-                                    onPressed: () {},
-                                    child: const Text("Change Password"))
-                              ],
+                    TextFieldEdit(
+                      controller: phoneController,
+                      text: _user['phone'].toString(),
+                    ),
+                    SizedBox(
+                      width: _publicController.size.value * 0.04,
+                    ),
+                    TextFieldEdit(
+                      controller: addressController,
+                      text: _user['address'],
+                    ),
+                    SizedBox(
+                      height: _publicController.size.value * 0.07,
+                    ),
+                    TextFieldEdit(
+                      controller: emailController,
+                      text: _user['email'],
+                    ),
+                    SizedBox(
+                      height: _publicController.size.value * 0.07,
+                    ),
+                    FindDropdown<String>(
+                      onChanged: (selectedItem) {
+                        setState(() {
+                          countryName = selectedItem ?? "";
+                          print(countryName);
+                        });
+                      },
+                      selectedItem: "No Country select",
+                      label: "Select Country",
+                      items: _userController.countries
+                          .map((country) =>
+                              "${country.name}, ${country.capital}")
+                          .toList(),
+                      labelStyle: Theme.of(context).textTheme.headline4,
+                      showClearButton: true,
+                      titleStyle: Theme.of(context).textTheme.headline4,
+                      searchBoxDecoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          focusedBorder: UnderlineInputBorder(),
+                          suffixIcon: Icon(Icons.edit)),
+                    ),
+                    SizedBox(
+                      height: _publicController.size.value * 0.07,
+                    ),
+                    ExpansionTile(
+                      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                      title: Text(
+                        "Change Password",
+                        style: Theme.of(context).textTheme.headline5!.copyWith(
+                              fontSize: _publicController.size.value * 0.04,
                             ),
-                          ))
-                    ],
-                  ),
-                ],
+                      ),
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: SizedBox(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: _publicController.size.value * 0.03,
+                                  ),
+                                  TextField(
+                                    decoration: FormDecoration.formDecoration(
+                                        _publicController.size.value,
+                                        "Current Password"),
+                                  ),
+                                  SizedBox(
+                                    height: _publicController.size.value * 0.03,
+                                  ),
+                                  TextField(
+                                    decoration: FormDecoration.formDecoration(
+                                        _publicController.size.value,
+                                        "New Password"),
+                                  ),
+                                  SizedBox(
+                                    height: _publicController.size.value * 0.03,
+                                  ),
+                                  TextField(
+                                    decoration: FormDecoration.formDecoration(
+                                        _publicController.size.value,
+                                        "Repeat New assword"),
+                                  ),
+                                  SizedBox(
+                                    height: _publicController.size.value * 0.03,
+                                  ),
+                                  OutlinedButton(
+                                      onPressed: () {},
+                                      child: const Text("Change Password"))
+                                ],
+                              ),
+                            ))
+                      ],
+                    ),
+                  ],
+                ),
               );
             },
           ),

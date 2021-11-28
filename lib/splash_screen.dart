@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/controller/cart_controller.dart';
+import 'package:safora_mart/controller/category_controller.dart';
 import 'package:safora_mart/controller/order_controller.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
@@ -29,6 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
     final CartController cartController = Get.put(CartController());
     final OrderController orderController = Get.put(OrderController());
     final UserController _userController = Get.put(UserController());
+    final CategoryController _categoryController =
+        Get.put(CategoryController());
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,
