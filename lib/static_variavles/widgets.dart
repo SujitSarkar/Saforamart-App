@@ -9,8 +9,8 @@ import 'package:safora_mart/nav_pages/wishlist_page.dart';
 class Widgets {
   static final List<Widget> mainNavBodyList = [
     const HomePage(),
-    const WishListPage(),
-    const SellPage(),
+    CategoryPage(),
+    WishListPage(),
     AccountPage(),
   ];
 

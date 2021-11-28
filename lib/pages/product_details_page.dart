@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
-import 'package:safora_mart/static_variavles/app_tabs.dart';
+import 'package:safora_mart/models/product.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/category_wise_product.dart';
+import 'package:safora_mart/widget_tile/product_amount_inc.dart';
 import 'package:safora_mart/widget_tile/star_builder.dart';
 
+import 'cart_page.dart';
+
 class ProductDetailPage extends StatefulWidget {
-  ProductDetailPage({Key? key}) : super(key: key);
+  const ProductDetailPage({Key? key, required this.id}) : super(key: key);
+
+  final int id;
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -21,6 +27,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   final PublicController _publicController = Get.find();
 
   final ProductController _productController = Get.find();
+
+  final CartController cartController = Get.find();
 
   get index => _productController.currentProductIndex;
 
@@ -39,6 +47,18 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   List tabBarViewList = [];
 
+  List<String> productSizetitle = [
+    "Small",
+    "Medium",
+    "Large",
+  ];
+
+  int productSizeIndex = 0;
+
+  late Product _item;
+
+  var isProductAddedToCart = false.obs;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,10 +73,69 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           onPressed: () => Get.back(),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.favorite_outline_outlined,
-                color: Colors.black),
+          Center(
+            //Cart Button And Functionality...
+            child: InkWell(
+              child: Stack(children: [
+                Icon(
+                  LineAwesomeIcons.shopping_cart_arrow_down,
+                  color: Colors.grey.shade800,
+                  size: _publicController.size.value * .085,
+                ),
+                Positioned(
+                  top: 0.0,
+                  right: 0.0,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding:
+                        EdgeInsets.all(_publicController.size.value * .007),
+                    decoration: const BoxDecoration(
+                        color: ThemeAndColor.themeColor,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: GetBuilder<CartController>(
+                      init: CartController(),
+                      builder: (_) {
+                        return Text(
+                          cartController.itemCount.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: _publicController.size.value * .02,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
+                        );
+                      },
+                    ),
+                  ),
+                )
+              ]),
+              onTap: () => Get.to(() => const CartPage()),
+            ),
+          ),
+          //Wishlist button and functionality...
+          GetBuilder<ProductController>(
+            init: ProductController(),
+            initState: (_) {
+              _item = _productController.findProductById(widget.id);
+            },
+            builder: (_) {
+              return IconButton(
+                onPressed: () {
+                  _productController.toggleFavouriteStatus(widget.id);
+                  Fluttertoast.showToast(
+                      msg: _item.isFavourite
+                          ? "Added to Wishlist"
+                          : "Remove from Wishlist",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1);
+                },
+                icon: _item.isFavourite
+                    ? const Icon(Icons.favorite,
+                        color: ThemeAndColor.secondaryColor)
+                    : const Icon(Icons.favorite_outline_outlined,
+                        color: Colors.black),
+              );
+            },
           ),
         ],
       ),
@@ -118,9 +197,9 @@ class _ProductDetailPageState extends State<ProductDetailPage>
       children: [
         Text(
           "Order By Call:",
-          style: TextStyle(
-              fontSize: _publicController.size.value * 0.05,
-              fontWeight: FontWeight.w300),
+          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                fontSize: _publicController.size.value * 0.047,
+              ),
         ),
         orderTypes(
             context: context,
@@ -179,9 +258,14 @@ class _ProductDetailPageState extends State<ProductDetailPage>
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(LineAwesomeIcons.shopping_bag),
-                  Text("BUY NOW"),
+                children: [
+                  const Icon(LineAwesomeIcons.shopping_bag),
+                  Text(
+                    "BUY NOW",
+                    style: Theme.of(context).textTheme.headline4!.copyWith(
+                          color: ThemeAndColor.whiteColor,
+                        ),
+                  ),
                 ],
               ),
               onPressed: () {},
@@ -192,15 +276,36 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           child: Container(
             margin: EdgeInsets.only(left: _publicController.size.value * 0.01),
             child: ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(LineAwesomeIcons.shopping_bag),
-                  Text("ADD TO CART"),
-                ],
-              ),
-              onPressed: () {},
-            ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(LineAwesomeIcons.shopping_bag),
+                    Obx(() => Text(
+                          isProductAddedToCart.value == true
+                              ? "Remove from CART"
+                              : "ADD TO CART",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(
+                                  color: ThemeAndColor.whiteColor,
+                                  fontSize: isProductAddedToCart.value == true
+                                      ? _publicController.size.value * 0.03
+                                      : _publicController.size.value * 0.033),
+                        )),
+                  ],
+                ),
+                onPressed: () {
+                  isProductAddedToCart.toggle();
+                  cartController.addItem(
+                    _productController.items[index].id,
+                    _productController.items[index].price,
+                    _productController.items[index].productTitle,
+                    1,
+                    _productController.items[index].imageUrl,
+                  );
+                  print("Product added to Cart...");
+                }),
           ),
         ),
       ],
@@ -231,7 +336,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           ),
         ),
         SizedBox(
-          height: _publicController.size.value * 0.5,
+          height: _publicController.size.value * 0.55,
           width: MediaQuery.of(context).size.width,
           child: TabBarView(
             controller: _tabController,
@@ -270,12 +375,9 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           children: [
             Row(
               children: [
-                const Text(
+                Text(
                   "Rating",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headline3,
                 ),
                 SizedBox(
                   width: _publicController.size.value * 0.015,
@@ -299,9 +401,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   Text productTitleRow() {
     return Text(
       _productController.items[index].productTitle,
-      style: TextStyle(
-          fontSize: _publicController.size.value * .06,
-          fontWeight: FontWeight.w600),
+      style: Theme.of(context).textTheme.headline1,
     );
   }
 
@@ -312,15 +412,20 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             padding:
                 EdgeInsets.only(right: _publicController.size.value * 0.02),
             child: Text(
-              "Size:",
-              style: TextStyle(
-                  fontSize: _publicController.size.value * 0.05,
-                  fontWeight: FontWeight.w300),
+              "Size: ",
+              style:
+                  Theme.of(context).textTheme.headline6!.copyWith(fontSize: 17),
             ),
           ),
-          productSize(context, "Small"),
-          productSize(context, "Medium"),
-          productSize(context, "Large"),
+          Wrap(
+            children: List.generate(productSizetitle.length, (index) {
+              return InkWell(
+                  onTap: () => setState(() {
+                        productSizeIndex = index;
+                      }),
+                  child: productSize(context, productSizetitle[index], index));
+            }),
+          )
         ],
       );
 
@@ -329,16 +434,19 @@ class _ProductDetailPageState extends State<ProductDetailPage>
         children: [
           Row(
             children: [
-              Text("Price:",
-                  style: TextStyle(
-                      fontSize: _publicController.size.value * .05,
-                      fontWeight: FontWeight.w200)),
+              Text(
+                "Price: ",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4!
+                    .copyWith(fontSize: _publicController.size.value * .045),
+              ),
               Text(
                 "${_productController.items[index].price.toStringAsFixed(2)} \u{09F3}",
-                style: TextStyle(
-                    fontSize: _publicController.size.value * .05,
-                    fontWeight: FontWeight.w600,
-                    decoration: TextDecoration.underline),
+                style: Theme.of(context).textTheme.headline4!.copyWith(
+                      fontSize: _publicController.size.value * .05,
+                      decoration: TextDecoration.underline,
+                    ),
               )
             ],
           ),
@@ -347,51 +455,33 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             height: _publicController.size.value * .05,
           ),
           //Product price and amount
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.remove_circle,
-                  size: _publicController.size.value * .08,
-                ),
-              ),
-              Text(
-                "1",
-                style: TextStyle(
-                    fontSize: _publicController.size.value * .05,
-                    fontWeight: FontWeight.w600,
-                    decoration: TextDecoration.underline),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.add_circle,
-                  size: _publicController.size.value * .08,
-                ),
-              ),
-            ],
+          ProductAmountInc(
+            productId: _productController.items[index].id,
           ),
         ],
       );
 
-  Container productSize(BuildContext context, String text) {
+  Widget productSize(BuildContext context, String text, int index) {
     return Container(
       width: _publicController.size.value * 0.18,
       padding: EdgeInsets.all(_publicController.size.value * .02),
       margin: EdgeInsets.only(right: _publicController.size.value * .02),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        border: Border.all(color: Theme.of(context).primaryColor, width: 2),
+        color: productSizeIndex == index
+            ? Theme.of(context).primaryColor
+            : Theme.of(context).primaryColor.withOpacity(0.1),
+        border: Border.all(
+            color: Theme.of(context).primaryColor.withOpacity(0.2), width: 2),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: Theme.of(context).textTheme.headline5!.copyWith(
             fontSize: _publicController.size.value * .03,
-            fontWeight: FontWeight.w600,
-            color: ThemeAndColor.whiteColor),
+            color: productSizeIndex == index
+                ? ThemeAndColor.whiteColor
+                : Colors.black54),
       ),
     );
   }
@@ -418,25 +508,41 @@ class _ProductDetailPageState extends State<ProductDetailPage>
         ),
       );
 
-  SizedBox questionAnswer(BuildContext context) {
-    return SizedBox(
-      height: _publicController.size.value * 0.3,
-      child: commonTextField(
-          context: context,
-          hintText: "Write Your Question Here...",
-          buttonText: "SUBMIT QUESTION",
-          buttonPress: _productController.qaButtonPress),
+  Column questionAnswer(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: _publicController.size.value * 0.4,
+          child: commonTextField(
+              context: context,
+              hintText: "Write Your Question Here...",
+              buttonText: "SUBMIT QUESTION",
+              buttonPress: _productController.qaButtonPress),
+        ),
+        OutlinedButton(
+          onPressed: () {},
+          child: const Text("View All QnA"),
+        )
+      ],
     );
   }
 
-  SizedBox customerReview(BuildContext context) {
-    return SizedBox(
-      height: _publicController.size.value * 0.3,
-      child: commonTextField(
-          context: context,
-          hintText: "Write Your Review Here...",
-          buttonText: "SUBMIT REVIEW",
-          buttonPress: _productController.reviewButtonPress),
+  Column customerReview(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: _publicController.size.value * 0.4,
+          child: commonTextField(
+              context: context,
+              hintText: "Write Your Review Here...",
+              buttonText: "SUBMIT REVIEW",
+              buttonPress: _productController.reviewButtonPress),
+        ),
+        OutlinedButton(
+          onPressed: () {},
+          child: const Text("View All Reviews"),
+        )
+      ],
     );
   }
 

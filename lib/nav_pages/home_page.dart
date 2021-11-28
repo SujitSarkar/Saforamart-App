@@ -59,6 +59,7 @@ class _HomePageState extends State<HomePage>
           preferredSize: const Size.fromHeight(60.0),
           child: HomeAppBar(scaffoldKey: _scaffoldKey),
         ),
+        
         drawer: const NavigationDrawer(),
         body: _bodyUI(publicController),
       ),

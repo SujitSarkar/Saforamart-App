@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
+import 'package:safora_mart/models/product.dart';
 import 'package:safora_mart/pages/product_details_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/product_grid.dart';
@@ -22,8 +24,10 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
 
   var productIndex = 0;
 
-  pressCallBack() {
-    Get.to(() => ProductDetailPage());
+  pressCallBack(int id) {
+    Get.to(() => ProductDetailPage(
+          id: id,
+        ));
   }
 
   @override
@@ -68,11 +72,8 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
                 return GetBuilder(
                     init: ProductController(),
                     builder: (value) {
-                      return productGrid(
-                        img: _productController.items[index].imageUrl,
-                        title: _productController.items[index].productTitle,
-                        price: _productController.items[index].price,
-                        discount: _productController.items[index].discount,
+                      return ProductGrid(
+                        id: _productController.items[index].id,
                       );
                     });
               },
@@ -83,89 +84,137 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
     );
   }
 
-  getProduct(int index) {
-    _productController.currentProductIndex = index;
-    productGrid(
-      img: _productController.items[index].imageUrl,
-      title: _productController.items[index].productTitle,
-      price: _productController.items[index].price,
-      discount: _productController.items[index].discount,
-    );
-  }
+  // getProduct(int index) {
+  //   _productController.currentProductIndex = index;
+  //   _productGrid(
+  //     id: _productController.items[index].id,
+  //     img: _productController.items[index].imageUrl,
+  //     title: _productController.items[index].productTitle,
+  //     price: _productController.items[index].price,
+  //     discount: _productController.items[index].discount,
+  //   );
+  // }
 
-  Widget productGrid({
-    required final String img,
-    required final String title,
-    required final double price,
-    required final double discount,
-    double? discountPrice = 0,
-  }) {
-    return Card(
-      child: SizedBox(
-        width: 120,
-        height: 150,
-        child: GestureDetector(
-          onTap: pressCallBack,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(img), fit: BoxFit.contain)),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          top: 10,
-                          left: 10,
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            color: ThemeAndColor.secondaryColor.withOpacity(.8),
-                            child: Text(
-                              discount.toStringAsFixed(2),
-                              style: TextStyle(color: ThemeAndColor.whiteColor),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Text(
-                  title,
-                  overflow: TextOverflow.fade,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 10),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "\$${price.toStringAsFixed(2)}",
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    Text(
-                      discountPrice == 0 ? "" : "\$${price.toStringAsFixed(2)}",
-                      style: const TextStyle(
-                          decoration: TextDecoration.lineThrough),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _productGrid({
+  //   required final int id,
+  //   required final String img,
+  //   required final String title,
+  //   required final double price,
+  //   required final double discount,
+  //   double? discountPrice = 0,
+  // }) {
+  //   return Card(
+  //     child: SizedBox(
+  //       width: 120,
+  //       height: 150,
+  //       child: GestureDetector(
+  //           onTap: () {
+  //             Get.to(() => ProductDetailPage(id: id));
+  //           },
+  //           child: GetBuilder<ProductController>(
+  //             init: ProductController(),
+  //             initState: (_) {},
+  //             builder: (controller) {
+  //               return Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   Expanded(
+  //                     child: Padding(
+  //                       padding: const EdgeInsets.only(top: 5),
+  //                       child: Container(
+  //                         decoration: BoxDecoration(
+  //                             image: DecorationImage(
+  //                                 image: NetworkImage(img),
+  //                                 fit: BoxFit.contain)),
+  //                         child: Stack(
+  //                           children: [
+  //                             Positioned(
+  //                               top: 10,
+  //                               left: 10,
+  //                               child: Container(
+  //                                 padding: const EdgeInsets.all(3),
+  //                                 decoration: BoxDecoration(
+  //                                     color: Theme.of(context)
+  //                                         .colorScheme
+  //                                         .secondary
+  //                                         .withOpacity(.7),
+  //                                     borderRadius: BorderRadius.circular(4)),
+  //                                 child: Text(
+  //                                   discount.toStringAsFixed(2),
+  //                                   style: Theme.of(context)
+  //                                       .textTheme
+  //                                       .headline4!
+  //                                       .copyWith(
+  //                                         color: ThemeAndColor.whiteColor,
+  //                                       ),
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                             Positioned(
+  //                               top: -5,
+  //                               right: -8,
+  //                               child: Container(
+  //                                   decoration: BoxDecoration(
+  //                                       borderRadius: BorderRadius.circular(4)),
+  //                                   child: IconButton(
+  //                                     icon: Icon(
+  //                                       Icons.favorite_border,
+  //                                       color: Theme.of(context)
+  //                                           .colorScheme
+  //                                           .secondary,
+  //                                       size: _publicController.size.value *
+  //                                           0.055,
+  //                                     ),
+  //                                     onPressed: () {
+  //                                       _productController
+  //                                           .toggleFavouriteStatus(id);
+  //                                       Fluttertoast.showToast(
+  //                                           msg: "Added to Wishlist",
+  //                                           toastLength: Toast.LENGTH_SHORT,
+  //                                           gravity: ToastGravity.CENTER,
+  //                                           timeInSecForIosWeb: 1);
+  //                                     },
+  //                                   )),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Padding(
+  //                     padding: const EdgeInsets.symmetric(vertical: 5),
+  //                     child: Text(
+  //                       title,
+  //                       overflow: TextOverflow.fade,
+  //                       maxLines: 1,
+  //                       textAlign: TextAlign.center,
+  //                       style: const TextStyle(fontSize: 10),
+  //                     ),
+  //                   ),
+  //                   Padding(
+  //                     padding: const EdgeInsets.only(bottom: 5.0),
+  //                     child: Row(
+  //                       mainAxisAlignment: MainAxisAlignment.center,
+  //                       children: [
+  //                         Text(
+  //                           "\$${price.toStringAsFixed(2)}",
+  //                           style: const TextStyle(fontWeight: FontWeight.w600),
+  //                         ),
+  //                         Text(
+  //                           discountPrice == 0
+  //                               ? ""
+  //                               : "\$${price.toStringAsFixed(2)}",
+  //                           style: const TextStyle(
+  //                               decoration: TextDecoration.lineThrough),
+  //                         )
+  //                       ],
+  //                     ),
+  //                   )
+  //                 ],
+  //               );
+  //             },
+  //           )),
+  //     ),
+  //   );
+  // }
 }

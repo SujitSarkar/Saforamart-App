@@ -26,20 +26,32 @@ class ThemeAndColor {
 
   static Color greyColor = Colors.grey;
   static Color whiteColor = Colors.white;
-  static Color blackColor = Colors.black87;
+  static Color blackColor = Colors.black45;
   static const Color secondaryColor = Color(0xFFff9933);
 
   static final appTheme = ThemeData(
       primarySwatch: const MaterialColor(0xff096799, themeMapColor),
+      colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: const MaterialColor(
+        0xff096799,
+        themeMapColor,
+      )).copyWith(
+        secondary: secondaryColor,
+      ),
       fontFamily: 'ubuntu',
       canvasColor: Colors.transparent,
       textTheme: const TextTheme(
-        headline1: TextStyle(fontFamily: "ubuntu"),
-        headline2: TextStyle(fontFamily: "ubuntu"),
-        headline3: TextStyle(fontFamily: "ubuntu"),
-        headline4: TextStyle(fontFamily: "ubuntu"),
-        headline5: TextStyle(fontFamily: "ubuntu"),
-        headline6: TextStyle(fontFamily: "ubuntu"),
+        headline1: TextStyle(
+            fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 22),
+        headline2: TextStyle(
+            fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 18),
+        headline3: TextStyle(
+            fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 14),
+        headline4: TextStyle(
+            fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 12),
+        headline5: TextStyle(
+            fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 10),
+        headline6: TextStyle(fontFamily: "ubuntu", fontSize: 10),
         subtitle1: TextStyle(fontFamily: "ubuntu"),
         subtitle2: TextStyle(fontFamily: "ubuntu"),
         bodyText1: TextStyle(fontFamily: "ubuntu"),
