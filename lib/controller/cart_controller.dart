@@ -41,7 +41,7 @@ class CartController extends GetxController {
     update();
   }
 
-  int itemAmount(int productId) {
+  int itemQuantity(int productId) {
     int amount = 0;
     _items.forEach((key, value) {
       if (key == productId) {
@@ -69,6 +69,7 @@ class CartController extends GetxController {
         ),
       );
     }
+    update();
   }
 
   void decreaseQuantity(int productId) {
@@ -84,6 +85,7 @@ class CartController extends GetxController {
         ),
       );
     }
+    update();
   }
 
   void clear() {

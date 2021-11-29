@@ -64,6 +64,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: ThemeAndColor.whiteColor,
         leading: IconButton(
           icon: Icon(

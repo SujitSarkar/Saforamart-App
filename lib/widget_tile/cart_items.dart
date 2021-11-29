@@ -3,8 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/controller/cart_controller.dart';
+import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/pages/product_details_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
+import 'package:safora_mart/widget_tile/product_amount_inc.dart';
 
 class CartItem extends StatelessWidget {
   final String id;
@@ -14,7 +16,7 @@ class CartItem extends StatelessWidget {
   final int quantity;
   final String title;
 
-  const CartItem({
+  CartItem({
     Key? key,
     required this.id,
     required this.productId,
@@ -23,6 +25,8 @@ class CartItem extends StatelessWidget {
     required this.title,
     required this.productImg,
   }) : super(key: key);
+
+  PublicController _publicController = PublicController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,19 +64,37 @@ class CartItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Chip(
+                    padding: const EdgeInsets.only(top: 4, right: 4, left: 4),
                     label: Text(
                       '\u{09F3}$price',
-                      style: TextStyle(color: ThemeAndColor.whiteColor),
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                          fontSize: 16, color: ThemeAndColor.whiteColor),
                     ),
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
-                  Text("In Total: \u{09F3}${price * quantity}"),
+                  Row(
+                    children: [
+                      const Text("In Total: \u{09F3}"),
+                      Text(
+                        "${price * quantity}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline5!
+                            .copyWith(fontSize: 14),
+                      )
+                    ],
+                  ),
                 ],
               ),
-              trailing: Column(
-                children: [
-                  Text("$quantity X"),
-                ],
+              trailing: Text.rich(
+                TextSpan(
+                    text: "$quantity",
+                    style: Theme.of(context).textTheme.headline2,
+                    children: [
+                      TextSpan(
+                          text: "x",
+                          style: Theme.of(context).textTheme.bodyText2),
+                    ]),
               ),
             ),
           ),
