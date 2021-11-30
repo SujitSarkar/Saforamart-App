@@ -20,7 +20,9 @@ class ProductAmountInc extends StatelessWidget {
           return Row(
             children: [
               IconButton(
-                onPressed: () => controller.decreaseQuantity(productId),
+                onPressed: () => controller.itemQuantity(productId) > 1
+                    ? controller.decreaseQuantity(productId)
+                    : null,
                 icon: Icon(
                   Icons.remove_circle,
                   size: _publicController.size.value * .08,
@@ -28,7 +30,7 @@ class ProductAmountInc extends StatelessWidget {
                 ),
               ),
               Obx(() => Text(
-                    "${controller.itemAmount(productId)}",
+                    "${controller.itemQuantity(productId)}",
                     style: TextStyle(
                         fontSize: _publicController.size.value * .05,
                         fontWeight: FontWeight.w600,

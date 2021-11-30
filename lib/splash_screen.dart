@@ -6,6 +6,7 @@ import 'package:safora_mart/controller/order_controller.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/controller/user_controller.dart';
+import 'package:safora_mart/pages/login_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'home_nav.dart';
 
@@ -20,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3))
-        .then((value) => Get.offAll(() => const HomeNavPage()));
+        .then((value) => Get.offAll(() => HomeNavPage()));
   }
 
   @override

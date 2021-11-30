@@ -97,6 +97,13 @@ class CategoryController extends GetxController {
     "Sub Category",
     "Sub Category",
   ];
+
+  List categoryItems = [
+    {
+      "name": "category",
+      "img": "https://sobjibazaar.com/images/thumbs/0002509_snacks_370.png",
+    }
+  ];
   get categories {
     return _categories;
   }

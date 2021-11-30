@@ -30,6 +30,7 @@ class ThemeAndColor {
   static const Color secondaryColor = Color(0xFFff9933);
 
   static final appTheme = ThemeData(
+      scaffoldBackgroundColor: whiteColor,
       primarySwatch: const MaterialColor(0xff096799, themeMapColor),
       colorScheme: ColorScheme.fromSwatch(
           primarySwatch: const MaterialColor(

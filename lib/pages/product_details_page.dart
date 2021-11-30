@@ -11,7 +11,7 @@ import 'package:safora_mart/widget_tile/category_wise_product.dart';
 import 'package:safora_mart/widget_tile/product_amount_inc.dart';
 import 'package:safora_mart/widget_tile/star_builder.dart';
 
-import 'cart_page.dart';
+import '../nav_pages/cart_page.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({Key? key, required this.id}) : super(key: key);
@@ -64,6 +64,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: ThemeAndColor.whiteColor,
         leading: IconButton(
           icon: Icon(

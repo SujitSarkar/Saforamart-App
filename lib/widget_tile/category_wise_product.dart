@@ -25,9 +25,7 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
   var productIndex = 0;
 
   pressCallBack(int id) {
-    Get.to(() => ProductDetailPage(
-          id: id,
-        ));
+    Get.to(() => ProductDetailPage(id: id));
   }
 
   @override

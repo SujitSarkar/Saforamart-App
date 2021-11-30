@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AppTabs extends StatelessWidget {
+class GridContent extends StatelessWidget {
   final Color color;
   final String text;
-  const AppTabs({Key? key, this.color = Colors.black, required this.text})
+  const GridContent({Key? key, this.color = Colors.black, required this.text})
       : super(key: key);
 
   @override

@@ -14,8 +14,8 @@ class HomeNavPage extends StatefulWidget {
   _HomeNavPageState createState() => _HomeNavPageState();
 }
 
-class _HomeNavPageState extends State<HomeNavPage> with SingleTickerProviderStateMixin{
-
+class _HomeNavPageState extends State<HomeNavPage>
+    with SingleTickerProviderStateMixin {
   final autoSizeGroup = AutoSizeGroup();
   int _bottomNavIndex = 0;
 
@@ -27,12 +27,15 @@ class _HomeNavPageState extends State<HomeNavPage> with SingleTickerProviderStat
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),//center button animation duration
+      duration:
+          const Duration(milliseconds: 300), //center button animation duration
       vsync: this,
     );
     curve = CurvedAnimation(
       parent: _animationController!,
-      curve: const Interval(0.5, 1.0,
+      curve: const Interval(
+        0.5,
+        1.0,
         curve: Curves.fastOutSlowIn,
       ),
     );
@@ -42,7 +45,7 @@ class _HomeNavPageState extends State<HomeNavPage> with SingleTickerProviderStat
     ).animate(curve!);
     Future.delayed(
       const Duration(seconds: 1),
-          () => _animationController!.forward(),
+      () => _animationController!.forward(),
     );
   }
 
@@ -52,13 +55,13 @@ class _HomeNavPageState extends State<HomeNavPage> with SingleTickerProviderStat
     return Scaffold(
       backgroundColor: Colors.white,
       body: Widgets.mainNavBodyList.elementAt(_bottomNavIndex),
-
       floatingActionButton: ScaleTransition(
         scale: animation!,
         child: FloatingActionButton(
           elevation: 0.0,
           backgroundColor: Theme.of(context).primaryColor,
-          child: Icon(LineAwesomeIcons.universal_access,color: Colors.white,size: publicController.size.value*.09),
+          child: Icon(LineAwesomeIcons.universal_access,
+              color: Colors.white, size: publicController.size.value * .09),
           onPressed: () {
             _animationController!.reset();
             _animationController!.forward();
@@ -66,34 +69,34 @@ class _HomeNavPageState extends State<HomeNavPage> with SingleTickerProviderStat
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
         itemCount: Widgets.mainNavBodyList.length,
         tabBuilder: (int index, bool isActive) {
-          final color = isActive ? ThemeAndColor.themeColor : Colors.grey.shade800;
+          final color =
+              isActive ? ThemeAndColor.themeColor : Colors.grey.shade800;
           return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Widgets.bottomNavIconList[index],
-                size: publicController.size.value*.08,
-                color: color,
-              ),
-              SizedBox(height: publicController.size.value *.01),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: publicController.size.value*.02),
-                child: AutoSizeText(
-                  Widgets.bottomNavLabelList[index],
-                  maxLines: 1,
-                  style: TextStyle(color: color),
-                  group: autoSizeGroup,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Widgets.bottomNavIconList[index],
+                  size: publicController.size.value * .08,
+                  color: color,
                 ),
-              )
-            ]
-          );
+                SizedBox(height: publicController.size.value * .01),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: publicController.size.value * .02),
+                  child: AutoSizeText(
+                    Widgets.bottomNavLabelList[index],
+                    maxLines: 1,
+                    style: TextStyle(color: color),
+                    group: autoSizeGroup,
+                  ),
+                )
+              ]);
         },
-        backgroundColor:ThemeAndColor.themeColor.withOpacity(0.08),
+        backgroundColor: ThemeAndColor.whiteColor,
         activeIndex: _bottomNavIndex,
         splashColor: Theme.of(context).primaryColor,
         notchAndCornersAnimation: animation,
@@ -101,8 +104,8 @@ class _HomeNavPageState extends State<HomeNavPage> with SingleTickerProviderStat
         notchSmoothness: NotchSmoothness.defaultEdge,
         gapLocation: GapLocation.center,
         elevation: 0.0,
-        leftCornerRadius: publicController.size.value*.04,
-        rightCornerRadius: publicController.size.value*.04,
+        leftCornerRadius: publicController.size.value * .04,
+        rightCornerRadius: publicController.size.value * .04,
         onTap: (index) => setState(() => _bottomNavIndex = index),
       ),
     );

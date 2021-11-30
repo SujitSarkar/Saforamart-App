@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:safora_mart/widget_tile/banner_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PublicController extends GetxController {
