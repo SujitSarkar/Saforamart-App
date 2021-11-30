@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
@@ -33,24 +34,24 @@ class _ProductGridState extends State<ProductGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: SizedBox(
-        width: 120,
-        height: 150,
-        child: GestureDetector(
-            onTap: () {
-              Get.to(() => ProductDetailPage(id: widget.id));
-            },
-            child: GetBuilder<ProductController>(
-              init: ProductController(),
-              initState: (_) {},
-              builder: (controller) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 5),
+    return SizedBox(
+      width: 120,
+      height: 150,
+      child: GestureDetector(
+          onTap: () {
+            Get.to(() => ProductDetailPage(id: widget.id));
+          },
+          child: GetBuilder<ProductController>(
+            init: ProductController(),
+            initState: (_) {},
+            builder: (controller) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Card(
                         child: Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
@@ -84,71 +85,79 @@ class _ProductGridState extends State<ProductGrid> {
                                 top: -5,
                                 right: -8,
                                 child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4)),
-                                    child: IconButton(
-                                      icon: Icon(
-                                        _product.isFavourite
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        size: _publicController.size.value *
-                                            0.055,
-                                      ),
-                                      onPressed: () {
-                                        _productController
-                                            .toggleFavouriteStatus(widget.id);
-                                        Fluttertoast.showToast(
-                                            msg: _product.isFavourite
-                                                ? "Added to Wishlist"
-                                                : "Remove from Wishlist",
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.CENTER,
-                                            timeInSecForIosWeb: 1);
-                                      },
-                                    )),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4)),
+                                  child: IconButton(
+                                    icon: _product.isFavourite
+                                        ? Icon(
+                                            FontAwesomeIcons.solidHeart,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            size: _publicController.size.value *
+                                                0.055,
+                                          )
+                                        : Icon(
+                                            FontAwesomeIcons.heart,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                            size: _publicController.size.value *
+                                                0.055,
+                                          ),
+                                    onPressed: () {
+                                      _productController
+                                          .toggleFavouriteStatus(widget.id);
+                                      Fluttertoast.showToast(
+                                          msg: _product.isFavourite
+                                              ? "Added to Wishlist"
+                                              : "Remove from Wishlist",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.CENTER,
+                                          timeInSecForIosWeb: 1);
+                                    },
+                                  ),
+                                ),
                               ),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Text(
-                        _product.productTitle,
-                        overflow: TextOverflow.fade,
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 10),
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      _product.productTitle,
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 10),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "\u{09F3}${_product.price.toStringAsFixed(2)}",
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            _product.discountPrice == 0
-                                ? ""
-                                : "\u{09F3}${_product.discountPrice!.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                                decoration: TextDecoration.lineThrough),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                );
-              },
-            )),
-      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "\u{09F3}${_product.price.toStringAsFixed(2)}",
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          _product.discountPrice == 0
+                              ? ""
+                              : "\u{09F3}${_product.discountPrice!.toStringAsFixed(2)}",
+                          style: const TextStyle(
+                              decoration: TextDecoration.lineThrough),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              );
+            },
+          )),
     );
   }
 }

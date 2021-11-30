@@ -4,8 +4,10 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safora_mart/config.dart';
 import 'package:safora_mart/controller/public_controller.dart';
-import 'package:safora_mart/static_variavles/app_tabs.dart';
+import 'package:safora_mart/nav_pages/category_page.dart';
+import 'package:safora_mart/static_variavles/grid_content.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/banner_image.dart';
 import 'package:safora_mart/widget_tile/category_wise_product.dart';
@@ -59,7 +61,6 @@ class _HomePageState extends State<HomePage>
           preferredSize: const Size.fromHeight(60.0),
           child: HomeAppBar(scaffoldKey: _scaffoldKey),
         ),
-        
         drawer: const NavigationDrawer(),
         body: _bodyUI(publicController),
       ),
@@ -76,9 +77,43 @@ class _HomePageState extends State<HomePage>
               ///Banner
               bannerSlider(publicController),
               SizedBox(
-                height: publicController.size.value * 0.02,
+                height: publicController.size.value * 0.04,
               ),
-
+              //Category Gride view section...
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Shop by Category",
+                    style: Theme.of(context).textTheme.headline1!.copyWith(
+                          color: Colors.black87,
+                        ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Get.to(() => CategoryPage()),
+                    child: Row(
+                      children: [
+                        Text(
+                          "View all",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(
+                                  color: Theme.of(context).primaryColorDark),
+                        ),
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Theme.of(context).primaryColorDark,
+                          size: customWidth(0.05),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: publicController.size.value * 0.04,
+              ),
               const HomeGridView(),
               SizedBox(
                 height: publicController.size.value * .02,
@@ -155,7 +190,6 @@ class _HomePageState extends State<HomePage>
               color: Colors.grey,
             ),
           ),
-          control: const SwiperControl(),
           autoplay: true,
         ),
       ),

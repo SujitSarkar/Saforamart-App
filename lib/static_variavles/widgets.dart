@@ -4,27 +4,28 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:safora_mart/nav_pages/account_page.dart';
 import 'package:safora_mart/nav_pages/category_page.dart';
 import 'package:safora_mart/nav_pages/home_page.dart';
-import 'package:safora_mart/nav_pages/wishlist_page.dart';
+import 'package:safora_mart/pages/wishlist_page.dart';
+import 'package:safora_mart/nav_pages/cart_page.dart';
 
 class Widgets {
   static final List<Widget> mainNavBodyList = [
     const HomePage(),
     CategoryPage(),
-    WishListPage(),
+    CartPage(),
     AccountPage(),
   ];
 
   static final bottomNavLabelList = [
     'Home',
     'Category',
-    'Wishlist',
+    'My Cart',
     'Account',
   ];
 
   static final bottomNavIconList = [
     LineAwesomeIcons.home,
     LineAwesomeIcons.boxes,
-    LineAwesomeIcons.heart,
+    LineAwesomeIcons.shopping_cart_arrow_down,
     LineAwesomeIcons.user,
   ];
 

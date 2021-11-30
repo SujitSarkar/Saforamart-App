@@ -2,10 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:safora_mart/config.dart';
 import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/category_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
-import 'package:safora_mart/pages/cart_page.dart';
+import 'package:safora_mart/nav_pages/cart_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/drawer.dart';
 import 'package:safora_mart/widget_tile/product_grid.dart';
@@ -53,43 +54,6 @@ class _CategoryPageState extends State<CategoryPage>
             child: InkWell(
               child: Stack(children: [
                 Icon(
-                  LineAwesomeIcons.shopping_cart_arrow_down,
-                  color: Colors.grey.shade800,
-                  size: publicController.size.value * .085,
-                ),
-                Positioned(
-                  top: 0.0,
-                  right: 0.0,
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(publicController.size.value * .007),
-                    decoration: const BoxDecoration(
-                        color: ThemeAndColor.themeColor,
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: GetBuilder<CartController>(
-                      init: CartController(),
-                      builder: (_) {
-                        return Text(
-                          _cartController.itemCount.toString(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: publicController.size.value * .02,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white),
-                        );
-                      },
-                    ),
-                  ),
-                )
-              ]),
-              onTap: () => Get.to(() => const CartPage()),
-            ),
-          ),
-          const SizedBox(width: 8.0),
-          Center(
-            child: InkWell(
-              child: Stack(children: [
-                Icon(
                   LineAwesomeIcons.bell,
                   color: Colors.grey.shade800,
                   size: publicController.size.value * .085,
@@ -116,7 +80,8 @@ class _CategoryPageState extends State<CategoryPage>
               ]),
               onTap: () {},
             ),
-          )
+          ),
+          SizedBox(width: customWidth(.05)),
         ],
         bottom: _tabBar(publicController),
       ),
@@ -227,7 +192,7 @@ class _CategoryPageState extends State<CategoryPage>
                       horizontal: publicController.size.value * .015,
                       vertical: publicController.size.value * .015),
                   child: AutoSizeText(
-                    "${_categoryController.subCategory[index]} $index",
+                    "Sub Category $index",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey.shade900),
                     group: _autoSizeGroup,

@@ -38,9 +38,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   child: Column(
                     children: [
                       //SizedBox(height: publicController.size.value*.07),
-                      const Divider(color: Colors.grey, height: 0.5),
-                      _functionBuilder(
-                          'Terms & Condition', LineAwesomeIcons.gavel),
+
                       const Divider(color: Colors.grey, height: 0.5),
                       _functionBuilder(
                           'Payment Method', LineAwesomeIcons.money_check),

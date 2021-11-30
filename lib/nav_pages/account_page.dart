@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/controller/user_controller.dart';
+import 'package:safora_mart/pages/wishlist_page.dart';
 import 'package:safora_mart/pages/edit_profile.dart';
 import 'package:safora_mart/pages/order_page.dart';
 import 'package:safora_mart/pages/payment_method.dart';
@@ -16,6 +17,7 @@ class AccountPage extends StatelessWidget {
 
   var profileSetting = [
     'Edit Profile',
+    'My Wishlist',
     'App Settings',
     'Shipping Address',
     'Order History',
@@ -25,6 +27,7 @@ class AccountPage extends StatelessWidget {
 
   var profileSettingIcons = [
     Icons.person,
+    Icons.favorite_border,
     Icons.settings,
     FontAwesomeIcons.mapMarker,
     FontAwesomeIcons.clipboard,
@@ -37,10 +40,13 @@ class AccountPage extends StatelessWidget {
       case 0:
         Get.to(() => EditProfile());
         break;
-      case 3:
-        Get.to(() => OrderScreen());
+      case 1:
+        Get.to(() => WishListPage());
         break;
       case 4:
+        Get.to(() => OrderScreen());
+        break;
+      case 5:
         Get.to(() => PaymentMethodPage());
         break;
       default:
