@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:safora_mart/config.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/models/product.dart';
@@ -61,7 +62,7 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
             ]),
           ),
           SizedBox(
-            height: _publicController.size.value * .45,
+            height: _publicController.size.value * .6,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
@@ -70,8 +71,12 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
                 return GetBuilder(
                     init: ProductController(),
                     builder: (value) {
-                      return ProductGrid(
-                        id: _productController.items[index].id,
+                      return Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: customWidth(.012)),
+                        child: ProductGrid(
+                          id: _productController.items[index].id,
+                        ),
                       );
                     });
               },
