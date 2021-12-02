@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/models/product.dart';
 import 'package:safora_mart/pages/product_details_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
+import 'package:safora_mart/widget_tile/product_amount_btns.dart';
+import 'package:safora_mart/widget_tile/product_amount_inc.dart';
+
+import '../config.dart';
 
 class ProductGrid extends StatefulWidget {
   final int id;
@@ -26,6 +32,29 @@ class _ProductGridState extends State<ProductGrid> {
 
   late Product _product;
 
+  Color animateBGColor = ThemeAndColor.themeColor;
+  Color animateFGColor = ThemeAndColor.whiteColor;
+  bool isAnimate = false;
+
+  double animateWith = customWidth(0.08);
+  double animatePositionRight = customWidth(0.02);
+
+  animationOpne() {
+    setState(() {
+      isAnimate = true;
+      animateWith = customWidth(.29);
+      animatePositionRight = customWidth(.02);
+    });
+  }
+
+  animationClose() {
+    setState(() {
+      isAnimate = false;
+      animateWith = customWidth(0.08);
+      animatePositionRight = customWidth(0.02);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,8 +64,8 @@ class _ProductGridState extends State<ProductGrid> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 120,
-      height: 150,
+      width: customWidth(0.35),
+      height: customWidth(0.33),
       child: GestureDetector(
           onTap: () {
             Get.to(() => ProductDetailPage(id: widget.id));
@@ -48,80 +77,134 @@ class _ProductGridState extends State<ProductGrid> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Card(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(_product.imageUrl),
-                                  fit: BoxFit.contain)),
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                top: 10,
-                                left: 10,
-                                child: Container(
-                                  padding: const EdgeInsets.all(3),
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary
-                                          .withOpacity(.7),
-                                      borderRadius: BorderRadius.circular(4)),
-                                  child: Text(
-                                    _product.discount.toStringAsFixed(2),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline4!
-                                        .copyWith(
-                                          color: ThemeAndColor.whiteColor,
-                                        ),
+                  Card(
+                    elevation: 3,
+                    child: Container(
+                      width: customWidth(0.4),
+                      height: customWidth(0.35),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(_product.imageUrl),
+                              fit: BoxFit.contain)),
+                      child: Stack(
+                        children: [
+                          Visibility(
+                            visible: isAnimate,
+                            child: Positioned(
+                              bottom: customWidth(.06),
+                              right: customWidth(-.02),
+                              child: IconButton(
+                                  padding: const EdgeInsets.all(0),
+                                  alignment: Alignment.center,
+                                  icon: Icon(
+                                    FontAwesomeIcons.solidWindowClose,
+                                    color: animateBGColor,
+                                    size: customWidth(0.065),
                                   ),
-                                ),
-                              ),
-                              Positioned(
-                                top: -5,
-                                right: -8,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4)),
-                                  child: IconButton(
-                                    icon: _product.isFavourite
-                                        ? Icon(
-                                            FontAwesomeIcons.solidHeart,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            size: _publicController.size.value *
-                                                0.055,
-                                          )
-                                        : Icon(
-                                            FontAwesomeIcons.heart,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            size: _publicController.size.value *
-                                                0.055,
-                                          ),
-                                    onPressed: () {
-                                      _productController
-                                          .toggleFavouriteStatus(widget.id);
-                                      Fluttertoast.showToast(
-                                          msg: _product.isFavourite
-                                              ? "Added to Wishlist"
-                                              : "Remove from Wishlist",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.CENTER,
-                                          timeInSecForIosWeb: 1);
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
+                                  onPressed: () {
+                                    animationClose();
+                                  }),
+                            ),
                           ),
-                        ),
+                          Positioned(
+                            bottom: customWidth(.01),
+                            right: animatePositionRight,
+                            child: AnimatedContainer(
+                              alignment: Alignment.center,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeOut,
+                              width: animateWith,
+                              height: customWidth(0.08),
+                              decoration: BoxDecoration(
+                                  color: animateBGColor,
+                                  borderRadius: BorderRadius.circular(
+                                      customWidth(0.063))),
+                              child: isAnimate
+                                  ? Row(
+                                      children: [
+                                        ProductAmountBtns(
+                                          productId: widget.id,
+                                          close: animationClose,
+                                        ),
+                                      ],
+                                    )
+                                  : IconButton(
+                                      padding: const EdgeInsets.all(0),
+                                      alignment: Alignment.center,
+                                      icon: Icon(
+                                        Icons.add,
+                                        color: animateFGColor,
+                                        size: customWidth(0.055),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          isAnimate = true;
+                                        });
+                                        animationOpne();
+                                      }),
+                            ),
+                          ),
+                          Positioned(
+                            top: customWidth(0.036),
+                            left: customWidth(0.036),
+                            child: Container(
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondary
+                                      .withOpacity(.7),
+                                  borderRadius: BorderRadius.circular(4)),
+                              child: Text(
+                                _product.discount.toStringAsFixed(2),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                      color: ThemeAndColor.whiteColor,
+                                    ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: customWidth(-.01),
+                            right: customWidth(-0.02),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4)),
+                              child: IconButton(
+                                icon: _product.isFavourite
+                                    ? Icon(
+                                        FontAwesomeIcons.solidHeart,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        size: _publicController.size.value *
+                                            0.055,
+                                      )
+                                    : Icon(
+                                        FontAwesomeIcons.heart,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        size: _publicController.size.value *
+                                            0.055,
+                                      ),
+                                onPressed: () {
+                                  _productController
+                                      .toggleFavouriteStatus(widget.id);
+                                  Fluttertoast.showToast(
+                                      msg: _product.isFavourite
+                                          ? "Added to Wishlist"
+                                          : "Remove from Wishlist",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

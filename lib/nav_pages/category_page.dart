@@ -19,7 +19,7 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   TabController? _tabController;
   int _tabIndex = 0;
   final _autoSizeGroup = AutoSizeGroup();
@@ -28,16 +28,26 @@ class _CategoryPageState extends State<CategoryPage>
   final CategoryController _categoryController = Get.find();
   final CartController _cartController = Get.find();
 
+  TabController? _nestedTabController;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 10, vsync: this);
+    _nestedTabController = TabController(length: 5, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nestedTabController!.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final PublicController publicController = Get.find();
     final Size size = MediaQuery.of(context).size;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -121,18 +131,43 @@ class _CategoryPageState extends State<CategoryPage>
         ),
       );
 
-  Widget _bodyUI(PublicController publicController, Size size) => Row(
+  Widget _bodyUI(PublicController publicController, Size size) => Column(
         mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           ///Sidebar
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            width: size.width * .23,
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (_, index) => _sidebarTie(publicController, index),
-            ),
+          // Container(
+          //   padding: const EdgeInsets.symmetric(vertical: 5.0),
+          //   width: size.width * .23,
+          //   child: ListView.builder(
+          //     physics: const BouncingScrollPhysics(),
+          //     itemCount: 10,
+          //     itemBuilder: (_, index) => _sidebarTie(publicController, index),
+          //   ),
+          // ),
+          TabBar(
+            controller: _nestedTabController,
+            indicatorColor: Colors.teal,
+            labelColor: Colors.teal,
+            unselectedLabelColor: Colors.black54,
+            isScrollable: true,
+            tabs: <Widget>[
+              Tab(
+                text: "Sub One",
+              ),
+              Tab(
+                text: "Sub Two",
+              ),
+              Tab(
+                text: "Sub Three",
+              ),
+              Tab(
+                text: "Sub Four",
+              ),
+              Tab(
+                text: "Sub Five",
+              ),
+            ],
           ),
 
           ///Divider
@@ -144,26 +179,40 @@ class _CategoryPageState extends State<CategoryPage>
           ///Product Body
           Expanded(
             child: Container(
+              height: MediaQuery.of(context).size.height * 0.70,
               color: Colors.white,
               margin:
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-              child: GridView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10.0,
-                      mainAxisSpacing: 10.0,
-                      childAspectRatio: 0.7),
-                  itemCount: 50,
-                  itemBuilder: (_, index) => Container(
-                        padding: const EdgeInsets.all(5),
-                        color: Theme.of(context).primaryColor.withOpacity(.3),
-                        child: Text("$index"),
-                      )),
+              child: TabBarView(
+                controller: _nestedTabController,
+                children: [
+                  singlePageCategoryGrid(),
+                  singlePageCategoryGrid(),
+                  singlePageCategoryGrid(),
+                  singlePageCategoryGrid(),
+                  singlePageCategoryGrid(),
+                ],
+              ),
             ),
           ),
         ],
       );
+
+  GridView singlePageCategoryGrid() {
+    return GridView.builder(
+        physics: const BouncingScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0,
+            childAspectRatio: 0.7),
+        itemCount: 50,
+        itemBuilder: (_, index) => Container(
+              padding: const EdgeInsets.all(5),
+              color: Theme.of(context).primaryColor.withOpacity(.3),
+              child: Text("$index"),
+            ));
+  }
 
   Widget _sidebarTie(PublicController publicController, int index) => InkWell(
         onTap: () {
