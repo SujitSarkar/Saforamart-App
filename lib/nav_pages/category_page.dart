@@ -114,8 +114,9 @@ class _CategoryPageState extends State<CategoryPage>
             width: 3.5,
             color: ThemeAndColor.themeColor,
           ))),
-          //indicatorColor: Colors.green,
           indicatorSize: TabBarIndicatorSize.label,
+          labelColor: ThemeAndColor.themeColor,
+          unselectedLabelColor: ThemeAndColor.blackColor,
           physics: const BouncingScrollPhysics(),
           tabs: _categoryController.mainCategory
               .map((cat) => Padding(
@@ -146,12 +147,26 @@ class _CategoryPageState extends State<CategoryPage>
           //   ),
           // ),
           TabBar(
+            onTap: (covariant) async {
+              setState(() => _tempSubIndex = covariant);
+            },
             controller: _nestedTabController,
-            indicatorColor: Colors.teal,
-            labelColor: Colors.teal,
-            unselectedLabelColor: Colors.black54,
+            padding: EdgeInsets.only(top: customWidth(0.01)),
+            labelColor: ThemeAndColor.whiteColor,
+            indicatorPadding: EdgeInsets.all(customWidth(0.01)),
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicator: BoxDecoration(
+              borderRadius: BorderRadius.circular(
+                25.0,
+              ),
+              color: _nestedTabController!.index == _tempSubIndex
+                  ? ThemeAndColor.themeColor
+                  : ThemeAndColor.greyColor,
+            ),
+            unselectedLabelColor: ThemeAndColor.themeColor,
             isScrollable: true,
-            tabs: <Widget>[
+            physics: const BouncingScrollPhysics(),
+            tabs: const [
               Tab(
                 text: "Sub One",
               ),
@@ -202,16 +217,12 @@ class _CategoryPageState extends State<CategoryPage>
     return GridView.builder(
         physics: const BouncingScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
+            crossAxisCount: 3,
             crossAxisSpacing: 10.0,
             mainAxisSpacing: 10.0,
-            childAspectRatio: 0.7),
-        itemCount: 50,
-        itemBuilder: (_, index) => Container(
-              padding: const EdgeInsets.all(5),
-              color: Theme.of(context).primaryColor.withOpacity(.3),
-              child: Text("$index"),
-            ));
+            childAspectRatio: 0.55),
+        itemCount: 10,
+        itemBuilder: (_, index) => ProductGrid(id: 1));
   }
 
   Widget _sidebarTie(PublicController publicController, int index) => InkWell(
