@@ -30,6 +30,8 @@ class _CategoryPageState extends State<CategoryPage>
 
   TabController? _nestedTabController;
 
+  get itemBuilder => null;
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +43,13 @@ class _CategoryPageState extends State<CategoryPage>
   void dispose() {
     super.dispose();
     _nestedTabController!.dispose();
+    List pges = [
+      singlePageCategoryGrid(),
+      singlePageCategoryGrid(),
+      singlePageCategoryGrid(),
+      singlePageCategoryGrid(),
+      singlePageCategoryGrid(),
+    ];
   }
 
   @override
@@ -116,6 +125,9 @@ class _CategoryPageState extends State<CategoryPage>
           ))),
           indicatorSize: TabBarIndicatorSize.label,
           labelColor: ThemeAndColor.themeColor,
+          labelStyle: const TextStyle(
+            color: ThemeAndColor.themeColor,
+          ),
           unselectedLabelColor: ThemeAndColor.blackColor,
           physics: const BouncingScrollPhysics(),
           tabs: _categoryController.mainCategory
@@ -186,10 +198,10 @@ class _CategoryPageState extends State<CategoryPage>
           ),
 
           ///Divider
-          Container(
-              margin: const EdgeInsets.symmetric(vertical: 10.0),
-              color: Colors.blueGrey,
-              width: 0.5),
+          // Container(
+          //     margin: const EdgeInsets.symmetric(vertical: 10.0),
+          //     color: Colors.blueGrey,
+          //     width: 0.5),
 
           ///Product Body
           Expanded(
@@ -198,16 +210,17 @@ class _CategoryPageState extends State<CategoryPage>
               color: Colors.white,
               margin:
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-              child: TabBarView(
-                controller: _nestedTabController,
-                children: [
-                  singlePageCategoryGrid(),
-                  singlePageCategoryGrid(),
-                  singlePageCategoryGrid(),
-                  singlePageCategoryGrid(),
-                  singlePageCategoryGrid(),
-                ],
-              ),
+              // child: TabBarView(
+              //   controller: _nestedTabController,
+              //   children: [
+              //     singlePageCategoryGrid(),
+              //     singlePageCategoryGrid(),
+              //     singlePageCategoryGrid(),
+              //     singlePageCategoryGrid(),
+              //     singlePageCategoryGrid(),
+              //   ],
+              // ),
+              child: singlePageCategoryGrid(),
             ),
           ),
         ],
@@ -217,12 +230,12 @@ class _CategoryPageState extends State<CategoryPage>
     return GridView.builder(
         physics: const BouncingScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
+            crossAxisCount: 2,
             crossAxisSpacing: 10.0,
             mainAxisSpacing: 10.0,
-            childAspectRatio: 0.55),
+            childAspectRatio: 0.9),
         itemCount: 10,
-        itemBuilder: (_, index) => ProductGrid(id: 1));
+        itemBuilder: (_, index) => const ProductGrid(id: 1));
   }
 
   Widget _sidebarTie(PublicController publicController, int index) => InkWell(

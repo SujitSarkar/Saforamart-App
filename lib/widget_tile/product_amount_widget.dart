@@ -5,8 +5,8 @@ import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 
-class ProductAmountBtns extends StatelessWidget {
-  ProductAmountBtns({
+class ProductAmountWidget extends StatelessWidget {
+  ProductAmountWidget({
     Key? key,
     required this.productId,
   }) : super(key: key);
@@ -22,8 +22,8 @@ class ProductAmountBtns extends StatelessWidget {
         init: CartController(),
         builder: (controller) {
           return SizedBox(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -34,14 +34,14 @@ class ProductAmountBtns extends StatelessWidget {
                       : null,
                   icon: Icon(
                     Icons.remove,
-                    size: _publicController.size.value * .04,
+                    size: _publicController.size.value * .2,
                     color: Colors.white,
                   ),
                 ),
                 Obx(() => Text(
                       "${controller.itemQuantity(productId)}",
                       style: TextStyle(
-                          fontSize: _publicController.size.value * .03,
+                          fontSize: _publicController.size.value * .025,
                           color: Colors.white),
                     )),
                 IconButton(
@@ -49,7 +49,7 @@ class ProductAmountBtns extends StatelessWidget {
                   onPressed: () => controller.increaseQuantity(productId),
                   icon: Icon(
                     Icons.add,
-                    size: _publicController.size.value * .04,
+                    size: _publicController.size.value * .02,
                     color: Colors.white,
                   ),
                 ),

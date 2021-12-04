@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/models/product.dart';
@@ -29,6 +30,7 @@ class ProductGrid extends StatefulWidget {
 class _ProductGridState extends State<ProductGrid> {
   final PublicController _publicController = Get.find();
   final ProductController _productController = Get.find();
+  final CartController cartController = Get.find();
 
   late Product _product;
 
@@ -61,11 +63,13 @@ class _ProductGridState extends State<ProductGrid> {
     _product = _productController.findProductById(widget.id);
   }
 
+  var isProductAddedToCart = false.obs;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: customWidth(0.35),
-      height: customWidth(0.33),
+      width: customWidth(0.4),
+      height: customWidth(0.35),
       child: GestureDetector(
           onTap: () {
             Get.to(() => ProductDetailPage(id: widget.id));
@@ -82,9 +86,10 @@ class _ProductGridState extends State<ProductGrid> {
                     child: Container(
                       width: customWidth(0.4),
                       height: customWidth(0.35),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage(_product.imageUrl),
+                              image:
+                                  AssetImage("assets/images/dove-lotion.jpg"),
                               fit: BoxFit.contain)),
                       child: Stack(
                         children: [
@@ -124,7 +129,6 @@ class _ProductGridState extends State<ProductGrid> {
                                       children: [
                                         ProductAmountBtns(
                                           productId: widget.id,
-                                          close: animationClose,
                                         ),
                                       ],
                                     )
@@ -132,7 +136,8 @@ class _ProductGridState extends State<ProductGrid> {
                                       padding: const EdgeInsets.all(0),
                                       alignment: Alignment.center,
                                       icon: Icon(
-                                        Icons.add,
+                                        LineAwesomeIcons
+                                            .shopping_cart_arrow_down,
                                         color: animateFGColor,
                                         size: customWidth(0.055),
                                       ),
@@ -141,6 +146,19 @@ class _ProductGridState extends State<ProductGrid> {
                                           isAnimate = true;
                                         });
                                         animationOpne();
+                                        isProductAddedToCart.toggle();
+                                        cartController.addItem(
+                                          _productController
+                                              .items[widget.id].id,
+                                          _productController
+                                              .items[widget.id].price,
+                                          _productController
+                                              .items[widget.id].productTitle,
+                                          1,
+                                          _productController
+                                              .items[widget.id].imageUrl,
+                                        );
+                                        print("Product added to Cart...");
                                       }),
                             ),
                           ),

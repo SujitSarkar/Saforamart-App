@@ -64,8 +64,8 @@ class _HomeGridViewState extends State<HomeGridView>
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: Image.network(
-                      _categoryController.categoryItems[0]["img"],
+                    child: Image.asset(
+                      "assets/images/snacks.png",
                       height: customWidth(.22),
                     ),
                   )

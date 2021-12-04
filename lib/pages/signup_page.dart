@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/home_nav.dart';
+import 'package:safora_mart/pages/login_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 
 class SignupPage extends StatefulWidget {
@@ -89,7 +90,7 @@ class _SignupPageState extends State<SignupPage> {
                       padding:
                           EdgeInsets.all(_publicController.size.value * 0.03),
                       child: ElevatedButton(
-                          onPressed: () => Get.to(HomeNavPage()),
+                          onPressed: () => Get.offAll(LoginPage()),
                           child: const Text("SIGN UP")),
                     )
                   ],

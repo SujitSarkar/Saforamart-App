@@ -361,9 +361,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             height: _publicController.size.value * 0.9,
             decoration: BoxDecoration(
               color: ThemeAndColor.whiteColor,
-              image: DecorationImage(
-                  image:
-                      NetworkImage(_productController.items[index].imageUrl)),
+              image: const DecorationImage(
+                  image: AssetImage("assets/images/dove-lotion.jpg")),
             ),
           ),
         ),

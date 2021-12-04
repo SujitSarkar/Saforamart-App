@@ -39,11 +39,10 @@ class UserController extends GetxController {
 
   Future<void> readJson() async {
     final String response = await rootBundle.loadString('assets/data.json');
-    print("response: $response");
+
     final ListCountryModel listData = listcountryModelFromJson(response);
     print("Data: $listData");
 
     _countries = listData.data;
-    print("Data: $_countries");
   }
 }

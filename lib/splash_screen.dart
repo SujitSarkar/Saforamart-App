@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3))
-        .then((value) => Get.offAll(() => HomeNavPage()));
+        .then((value) => Get.offAll(() => LoginPage()));
   }
 
   @override
