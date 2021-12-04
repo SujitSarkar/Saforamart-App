@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safora_mart/config.dart';
 import 'package:safora_mart/controller/public_controller.dart';
+import 'package:safora_mart/home_nav.dart';
 import 'package:safora_mart/pages/signup_page.dart';
 import 'package:safora_mart/static_variavles/form_decoration.dart';
+import 'package:safora_mart/static_variavles/text_theme.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 
 class LoginPage extends StatefulWidget {
@@ -58,9 +61,27 @@ class _LoginPageState extends State<LoginPage> {
                     padding:
                         EdgeInsets.all(_publicController.size.value * 0.03),
                     child: ElevatedButton(
-                        onPressed: () => Get.to(SignupPage()),
+                        onPressed: () => Get.offAll(HomeNavPage()),
                         child: const Text("LOG IN")),
-                  )
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(customWidth(0.03)),
+                    child: GestureDetector(
+                      onTap: () => Get.to(() => SignupPage()),
+                      child: const Text.rich(
+                        TextSpan(
+                          text: "Don't have account? ",
+                          children: [
+                            TextSpan(
+                                text: "Sign up",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ))
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

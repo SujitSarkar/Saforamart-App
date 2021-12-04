@@ -2,11 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:safora_mart/config.dart';
 import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/pages/product_details_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
+import 'package:safora_mart/widget_tile/product_amount_btns.dart';
 import 'package:safora_mart/widget_tile/product_amount_inc.dart';
+import 'package:safora_mart/widget_tile/product_amount_widget.dart';
 
 class CartItem extends StatelessWidget {
   final String id;
@@ -50,53 +53,59 @@ class CartItem extends StatelessWidget {
       },
       child: GestureDetector(
         onTap: () => Get.off(ProductDetailPage(id: productId)),
-        child: Card(
-          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: ListTile(
-              leading: Container(
+        child: Padding(
+          padding: EdgeInsets.all(customWidth(0.01)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: customWidth(.25),
+                width: customWidth(.25),
                 child: Image.network(productImg),
               ),
-              title: Text(title),
-              subtitle: Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Chip(
-                    padding: const EdgeInsets.only(top: 4, right: 4, left: 4),
-                    label: Text(
-                      '\u{09F3}$price',
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
-                          fontSize: 16, color: ThemeAndColor.whiteColor),
+                  SizedBox(
+                    width: customWidth(.4),
+                    child: Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
-                  Row(
-                    children: [
-                      const Text("In Total: \u{09F3}"),
-                      Text(
-                        "${price * quantity}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5!
-                            .copyWith(fontSize: 14),
-                      )
-                    ],
+                  Container(
+                    child: ProductAmountInc(
+                      productId: productId,
+                    ),
                   ),
                 ],
               ),
-              trailing: Text.rich(
-                TextSpan(
-                    text: "$quantity",
-                    style: Theme.of(context).textTheme.headline2,
-                    children: [
-                      TextSpan(
-                          text: "x",
-                          style: Theme.of(context).textTheme.bodyText2),
-                    ]),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Chip(
+                    label: Text(
+                      '\u{09F3}$price',
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                          fontSize: 16, color: ThemeAndColor.greyColor),
+                    ),
+                    shadowColor: ThemeAndColor.themeColor,
+                    backgroundColor: Colors.white,
+                    elevation: 2,
+                  ),
+                  const Text("Total: "),
+                  Text(
+                    "\u{09F3}${price * quantity}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5!
+                        .copyWith(fontSize: 14),
+                  )
+                ],
               ),
-            ),
+            ],
           ),
         ),
       ),

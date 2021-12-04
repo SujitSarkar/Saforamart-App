@@ -101,7 +101,7 @@ class CategoryController extends GetxController {
   List categoryItems = [
     {
       "name": "category",
-      "img": "https://sobjibazaar.com/images/thumbs/0002509_snacks_370.png",
+      "img": "assets/image/snacks.png",
     }
   ];
   get categories {
