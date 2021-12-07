@@ -180,6 +180,7 @@ class _CartPageState extends State<CartPage> {
 
   Future<dynamic> showBottomSheet(BuildContext context) {
     return showModalBottomSheet(
+      context: context,
       builder: (context) {
         return Container(
           padding: EdgeInsets.all(customWidth(.06)),
@@ -204,14 +205,15 @@ class _CartPageState extends State<CartPage> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  navigator!.pop(context);
+                },
                 child: Text("Apply voucher"),
               )
             ],
           ),
         );
       },
-      context: context,
     );
   }
 
