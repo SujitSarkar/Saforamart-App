@@ -21,11 +21,14 @@ class _ProductListState extends State<ProductList> {
   final ProductController _productController = Get.find();
 
   late Product _product;
+  double discountPrice = 0.0;
 
   @override
   void initState() {
     super.initState();
     _product = _productController.findProductById(widget.id);
+    discountPrice =
+        _product.price - ((_product.price / 100) * _product.discount);
   }
 
   @override
@@ -54,8 +57,8 @@ class _ProductListState extends State<ProductList> {
                           width: _publicController.size.value * 0.3,
                           child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: Image.network(
-                                _product.imageUrl,
+                              child: Image.asset(
+                                _product.images[0],
                                 fit: BoxFit.cover,
                               )),
                         ),
@@ -72,7 +75,7 @@ class _ProductListState extends State<ProductList> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 5),
                                       child: Text(
-                                        _product.productTitle,
+                                        _product.title,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                         textAlign: TextAlign.start,
@@ -107,7 +110,7 @@ class _ProductListState extends State<ProductList> {
                                       children: [
                                         const Text("Discount Price: "),
                                         Text(
-                                          "\u{09F3} ${_product.discountPrice!.toStringAsFixed(2)}",
+                                          "\u{09F3} ${discountPrice.toStringAsFixed(2)}",
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline5!
@@ -154,7 +157,7 @@ class _ProductListState extends State<ProductList> {
                                               BorderRadius.circular(4)),
                                       child: IconButton(
                                         icon: Icon(
-                                          _product.isFavourite
+                                          _product.isFavourite!
                                               ? Icons.favorite
                                               : Icons.favorite_border,
                                           color: Theme.of(context)
@@ -167,7 +170,7 @@ class _ProductListState extends State<ProductList> {
                                           _productController
                                               .toggleFavouriteStatus(widget.id);
                                           Fluttertoast.showToast(
-                                              msg: _product.isFavourite
+                                              msg: _product.isFavourite!
                                                   ? "Added to Wishlist"
                                                   : "Remove from Wishlist",
                                               toastLength: Toast.LENGTH_SHORT,

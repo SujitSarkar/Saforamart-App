@@ -11,14 +11,14 @@ import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/drawer.dart';
 import 'package:safora_mart/widget_tile/product_grid.dart';
 
-class CategoryPage extends StatefulWidget {
-  const CategoryPage({Key? key}) : super(key: key);
+class NavCategoryPage extends StatefulWidget {
+  const NavCategoryPage({Key? key}) : super(key: key);
 
   @override
-  _CategoryPageState createState() => _CategoryPageState();
+  _NavCategoryPageState createState() => _NavCategoryPageState();
 }
 
-class _CategoryPageState extends State<CategoryPage>
+class _NavCategoryPageState extends State<NavCategoryPage>
     with TickerProviderStateMixin {
   TabController? _tabController;
   int _tabIndex = 0;

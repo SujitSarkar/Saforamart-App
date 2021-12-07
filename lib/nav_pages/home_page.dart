@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/config.dart';
 import 'package:safora_mart/controller/public_controller.dart';
-import 'package:safora_mart/nav_pages/category_page.dart';
+import 'package:safora_mart/nav_pages/nav_category_page.dart';
 import 'package:safora_mart/static_variavles/grid_content.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/banner_image.dart';
 import 'package:safora_mart/widget_tile/category_wise_product.dart';
 import 'package:safora_mart/widget_tile/drawer.dart';
 import 'package:safora_mart/widget_tile/home_app_bar.dart';
-import 'package:safora_mart/widget_tile/home_grid_view.dart';
+import 'package:safora_mart/widget_tile/home_category_grid_view.dart';
 import 'package:safora_mart/widget_tile/product_grid.dart';
 
 class HomePage extends StatefulWidget {
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage>
                         ),
                   ),
                   GestureDetector(
-                    onTap: () => Get.to(() => CategoryPage()),
+                    onTap: () => Get.to(() => NavCategoryPage()),
                     child: Row(
                       children: [
                         Text(
@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage>
               SizedBox(
                 height: publicController.size.value * 0.04,
               ),
-              const HomeGridView(),
+              const CategoryGridView(),
               SizedBox(
                 height: publicController.size.value * .02,
               ),
