@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'controller/public_controller.dart';
 
 class Config {
-  final PublicController _publicController = Get.find();
+  final PublicController _publicController = Get.put(PublicController());
   static late double screenWidth;
 
   double width(double value) {

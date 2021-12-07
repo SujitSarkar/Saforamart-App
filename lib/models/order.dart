@@ -1,14 +1,20 @@
+import 'package:safora_mart/models/product.dart';
+
 import 'cartItem.dart';
 
 class Order {
-  final String orderId;
+  final int orderId;
+  final String status;
   final double amount;
   final List<CartItem> products;
-  final DateTime dateTime;
+  final DateTime purcheaseTime;
+  final DateTime delivaryTime;
 
   Order(
       {required this.orderId,
+      required this.status,
       required this.amount,
       required this.products,
-      required this.dateTime});
+      required this.purcheaseTime,
+      required this.delivaryTime});
 }

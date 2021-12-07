@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:safora_mart/config.dart';
 import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
@@ -30,13 +32,19 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   final CartController cartController = Get.find();
 
-  get index => _productController.currentProductIndex;
+  int productSizeIndex = 0;
+
+  late Product _item;
+  int selectedImage = 0;
+
+  var isProductAddedToCart = false.obs;
 
   TabController? _tabController;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: tabBarList.length, vsync: this);
+    _item = _productController.findProductById(widget.id);
   }
 
   List tabBarList = const [
@@ -52,12 +60,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     "Medium",
     "Large",
   ];
-
-  int productSizeIndex = 0;
-
-  late Product _item;
-
-  var isProductAddedToCart = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -121,16 +123,23 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             builder: (_) {
               return IconButton(
                 onPressed: () {
-                  _productController.toggleFavouriteStatus(widget.id);
+                  // setState(() {
+                  //   if (_item.isFavourite!) {
+                  //     _item.isFavourite = false;
+                  //   } else {
+                  //     _item.isFavourite = true;
+                  //   }
+                  // });
+                  _productController.toggleFavouriteStatus(_item.id);
                   Fluttertoast.showToast(
-                      msg: _item.isFavourite
+                      msg: _item.isFavourite!
                           ? "Added to Wishlist"
                           : "Remove from Wishlist",
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 1);
                 },
-                icon: _item.isFavourite
+                icon: _item.isFavourite!
                     ? const Icon(Icons.favorite,
                         color: ThemeAndColor.secondaryColor)
                     : const Icon(Icons.favorite_outline_outlined,
@@ -148,6 +157,13 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             children: [
               //Product image
               productImage(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ...List.generate(
+                      _item.images.length, (i) => buildSmallProductPreview(i)),
+                ],
+              ),
               //Rating and sold
               ratingRow(),
               //Product Name and Description
@@ -299,11 +315,11 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                 onPressed: () {
                   isProductAddedToCart.toggle();
                   cartController.addItem(
-                    _productController.items[index].id,
-                    _productController.items[index].price,
-                    _productController.items[index].productTitle,
+                    _item.id,
+                    _item.price,
+                    _item.title,
                     1,
-                    _productController.items[index].imageUrl,
+                    _item.images[0],
                   );
                   print("Product added to Cart...");
                 }),
@@ -355,18 +371,47 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   }
 
   Card productImage() => Card(
-        child: Hero(
-          tag: "productImage",
-          child: Container(
-            height: _publicController.size.value * 0.9,
-            decoration: BoxDecoration(
-              color: ThemeAndColor.whiteColor,
-              image: const DecorationImage(
-                  image: AssetImage("assets/images/dove-lotion.jpg")),
+        child: Column(
+          children: [
+            AspectRatio(
+              aspectRatio: 1,
+              child: Container(
+                height: _publicController.size.value * 0.9,
+                decoration: BoxDecoration(
+                  color: ThemeAndColor.whiteColor,
+                  image: DecorationImage(
+                      image: AssetImage(_item.images[selectedImage])),
+                ),
+                child: Row(),
+              ),
             ),
-          ),
+          ],
         ),
       );
+  GestureDetector buildSmallProductPreview(int i) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedImage = i;
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+        margin: EdgeInsets.only(right: 15),
+        padding: EdgeInsets.all(8),
+        height: customWidth(.12),
+        width: customWidth(.12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+              color: ThemeAndColor.themeColor
+                  .withOpacity(selectedImage == i ? 1 : 0)),
+        ),
+        child: Image.asset(_item.images[i]),
+      ),
+    );
+  }
 
   SizedBox ratingRow() => SizedBox(
         height: _publicController.size.value * 0.15,
@@ -383,7 +428,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                   width: _publicController.size.value * 0.015,
                 ),
                 StarBuilder(
-                    rating: 3.9,
+                    rating: _item.rating,
                     starColor: ThemeAndColor.starColorList[1],
                     starSize: _publicController.size.value * 0.05)
               ],
@@ -400,7 +445,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   Text productTitleRow() {
     return Text(
-      _productController.items[index].productTitle,
+      _item.title,
       style: Theme.of(context).textTheme.headline1,
     );
   }
@@ -442,10 +487,10 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                     .copyWith(fontSize: _publicController.size.value * .045),
               ),
               Text(
-                "${_productController.items[index].price.toStringAsFixed(2)} \u{09F3}",
+                "${_item.price.toStringAsFixed(2)} \u{09F3}",
                 style: Theme.of(context).textTheme.headline4!.copyWith(
                       fontSize: _publicController.size.value * .05,
-                      decoration: TextDecoration.underline,
+                      color: Colors.black,
                     ),
               )
             ],
@@ -456,7 +501,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           ),
           //Product price and amount
           ProductAmountInc(
-            productId: _productController.items[index].id,
+            productId: _item.id,
           ),
         ],
       );
@@ -502,7 +547,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: _publicController.size.value * 0.05),
-              child: Text(_productController.items[index].description),
+              child: Text(_item.description),
             )
           ],
         ),

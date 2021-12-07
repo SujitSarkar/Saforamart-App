@@ -6,6 +6,7 @@ import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/models/product.dart';
 import 'package:safora_mart/pages/product_details_page.dart';
+import 'package:safora_mart/pages/single_category_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/product_grid.dart';
 
@@ -44,19 +45,25 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      "More Product",
-                      style: TextStyle(
-                          fontSize: _publicController.size.value * 0.04),
-                    ),
-                    Icon(
-                      Icons.arrow_forward,
-                      size: _publicController.size.value * 0.05,
-                    ),
-                  ],
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(() =>
+                        SingleCategoryPage(pageTitle: widget.categoryTitle));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "More Product",
+                        style: TextStyle(
+                            fontSize: _publicController.size.value * 0.04),
+                      ),
+                      Icon(
+                        Icons.arrow_forward,
+                        size: _publicController.size.value * 0.05,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ]),

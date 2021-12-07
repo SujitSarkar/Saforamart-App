@@ -4,14 +4,14 @@ import 'package:safora_mart/config.dart';
 import 'package:safora_mart/controller/category_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 
-class HomeGridView extends StatefulWidget {
-  const HomeGridView({Key? key}) : super(key: key);
+class CategoryGridView extends StatefulWidget {
+  const CategoryGridView({Key? key}) : super(key: key);
 
   @override
-  State<HomeGridView> createState() => _HomeGridViewState();
+  State<CategoryGridView> createState() => _CategoryGridViewState();
 }
 
-class _HomeGridViewState extends State<HomeGridView>
+class _CategoryGridViewState extends State<CategoryGridView>
     with SingleTickerProviderStateMixin {
   // late final ScrollController _scrollController;
 
@@ -38,6 +38,7 @@ class _HomeGridViewState extends State<HomeGridView>
           scrollDirection: Axis.horizontal,
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 200,
+              
               childAspectRatio: .8,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safora_mart/config.dart';
 
 class ThemeAndColor {
   static const Color themeColor = Color(0xff096799);
@@ -60,5 +61,10 @@ class ThemeAndColor {
         caption: TextStyle(fontFamily: "ubuntu"),
         button: TextStyle(fontFamily: "ubuntu"),
         overline: TextStyle(fontFamily: "ubuntu"),
-      ));
+      ),
+      dialogTheme: DialogTheme(
+          backgroundColor: whiteColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(customWidth(.05)),
+          )));
 }

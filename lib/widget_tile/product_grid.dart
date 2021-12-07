@@ -33,6 +33,7 @@ class _ProductGridState extends State<ProductGrid> {
   final CartController cartController = Get.find();
 
   late Product _product;
+  double discountPrice = 0.0;
 
   Color animateBGColor = ThemeAndColor.themeColor;
   Color animateFGColor = ThemeAndColor.whiteColor;
@@ -61,6 +62,9 @@ class _ProductGridState extends State<ProductGrid> {
   void initState() {
     super.initState();
     _product = _productController.findProductById(widget.id);
+    isProductAddedToCart.value = _product.isFavourite!;
+    discountPrice =
+        _product.price - ((_product.price / 100) * _product.discount);
   }
 
   var isProductAddedToCart = false.obs;
@@ -70,195 +74,201 @@ class _ProductGridState extends State<ProductGrid> {
     return SizedBox(
       width: customWidth(0.4),
       height: customWidth(0.35),
-      child: GestureDetector(
-          onTap: () {
-            Get.to(() => ProductDetailPage(id: widget.id));
-          },
-          child: GetBuilder<ProductController>(
-            init: ProductController(),
-            initState: (_) {},
-            builder: (controller) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Card(
-                    elevation: 3,
-                    child: Container(
-                      width: customWidth(0.4),
-                      height: customWidth(0.35),
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  AssetImage("assets/images/dove-lotion.jpg"),
-                              fit: BoxFit.contain)),
-                      child: Stack(
-                        children: [
-                          Visibility(
-                            visible: isAnimate,
-                            child: Positioned(
-                              bottom: customWidth(.06),
-                              right: customWidth(-.02),
-                              child: IconButton(
-                                  padding: const EdgeInsets.all(0),
-                                  alignment: Alignment.center,
-                                  icon: Icon(
-                                    FontAwesomeIcons.solidWindowClose,
-                                    color: animateBGColor,
-                                    size: customWidth(0.065),
-                                  ),
-                                  onPressed: () {
-                                    animationClose();
-                                  }),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: customWidth(.01),
-                            right: animatePositionRight,
-                            child: AnimatedContainer(
-                              alignment: Alignment.center,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeOut,
-                              width: animateWith,
-                              height: customWidth(0.08),
-                              decoration: BoxDecoration(
-                                  color: animateBGColor,
-                                  borderRadius: BorderRadius.circular(
-                                      customWidth(0.063))),
-                              child: isAnimate
-                                  ? Row(
-                                      children: [
-                                        ProductAmountBtns(
-                                          productId: widget.id,
-                                        ),
-                                      ],
-                                    )
-                                  : IconButton(
-                                      padding: const EdgeInsets.all(0),
-                                      alignment: Alignment.center,
-                                      icon: Icon(
-                                        LineAwesomeIcons
-                                            .shopping_cart_arrow_down,
-                                        color: animateFGColor,
-                                        size: customWidth(0.055),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          isAnimate = true;
-                                        });
-                                        animationOpne();
-                                        isProductAddedToCart.toggle();
-                                        cartController.addItem(
-                                          _productController
-                                              .items[widget.id].id,
-                                          _productController
-                                              .items[widget.id].price,
-                                          _productController
-                                              .items[widget.id].productTitle,
-                                          1,
-                                          _productController
-                                              .items[widget.id].imageUrl,
-                                        );
-                                        print("Product added to Cart...");
-                                      }),
-                            ),
-                          ),
-                          Positioned(
-                            top: customWidth(0.036),
-                            left: customWidth(0.036),
-                            child: Container(
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondary
-                                      .withOpacity(.7),
-                                  borderRadius: BorderRadius.circular(4)),
-                              child: Text(
-                                _product.discount.toStringAsFixed(2),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                      color: ThemeAndColor.whiteColor,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            top: customWidth(-.01),
-                            right: customWidth(-0.02),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4)),
-                              child: IconButton(
-                                icon: _product.isFavourite
-                                    ? Icon(
-                                        FontAwesomeIcons.solidHeart,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        size: _publicController.size.value *
-                                            0.055,
-                                      )
-                                    : Icon(
-                                        FontAwesomeIcons.heart,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        size: _publicController.size.value *
-                                            0.055,
-                                      ),
-                                onPressed: () {
-                                  _productController
-                                      .toggleFavouriteStatus(widget.id);
-                                  Fluttertoast.showToast(
-                                      msg: _product.isFavourite
-                                          ? "Added to Wishlist"
-                                          : "Remove from Wishlist",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.CENTER,
-                                      timeInSecForIosWeb: 1);
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Text(
-                      _product.productTitle,
-                      overflow: TextOverflow.fade,
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 10),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+      child: GetBuilder<ProductController>(
+        init: ProductController(),
+        initState: (_) {
+          _product = _productController.findProductById(widget.id);
+          isProductAddedToCart.value = _product.isFavourite!;
+        },
+        builder: (controller) {
+          return GestureDetector(
+            onTap: () {
+              Get.to(() => ProductDetailPage(id: _product.id));
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Card(
+                  elevation: 3,
+                  child: Container(
+                    width: customWidth(0.4),
+                    height: customWidth(0.35),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(_product.images[0]),
+                            fit: BoxFit.contain)),
+                    child: Stack(
                       children: [
-                        Text(
-                          "\u{09F3}${_product.price.toStringAsFixed(2)}",
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        Visibility(
+                          visible: isAnimate,
+                          child: Positioned(
+                            bottom: customWidth(.06),
+                            right: customWidth(-.02),
+                            child: IconButton(
+                                padding: const EdgeInsets.all(0),
+                                alignment: Alignment.center,
+                                icon: Icon(
+                                  FontAwesomeIcons.solidWindowClose,
+                                  color: animateBGColor,
+                                  size: customWidth(0.065),
+                                ),
+                                onPressed: () {
+                                  animationClose();
+                                }),
+                          ),
                         ),
-                        Text(
-                          _product.discountPrice == 0
-                              ? ""
-                              : "\u{09F3}${_product.discountPrice!.toStringAsFixed(2)}",
-                          style: const TextStyle(
-                              decoration: TextDecoration.lineThrough),
-                        )
+                        Positioned(
+                          bottom: customWidth(.01),
+                          right: animatePositionRight,
+                          child: AnimatedContainer(
+                            alignment: Alignment.center,
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeOut,
+                            width: animateWith,
+                            height: customWidth(0.08),
+                            decoration: BoxDecoration(
+                                color: isProductAddedToCart.isTrue
+                                    ? animateFGColor
+                                    : animateBGColor,
+                                borderRadius:
+                                    BorderRadius.circular(customWidth(0.063))),
+                            child: isAnimate
+                                ? Row(
+                                    children: [
+                                      ProductAmountBtns(
+                                        productId: widget.id,
+                                      ),
+                                    ],
+                                  )
+                                : Visibility(
+                                    visible: !isAnimate,
+                                    child: IconButton(
+                                        padding: const EdgeInsets.all(0),
+                                        alignment: Alignment.center,
+                                        icon: Icon(
+                                          LineAwesomeIcons
+                                              .shopping_cart_arrow_down,
+                                          color: isProductAddedToCart.isFalse
+                                              ? animateFGColor
+                                              : animateBGColor,
+                                          size: customWidth(0.055),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            isAnimate = true;
+                                          });
+                                          animationOpne();
+                                          isProductAddedToCart.toggle();
+                                          cartController.addItem(
+                                            _product.id,
+                                            _product.price,
+                                            _product.title,
+                                            1,
+                                            _product.images[0],
+                                          );
+                                          print("Product added to Cart...");
+                                        }),
+                                  ),
+                          ),
+                        ),
+                        //discount percent
+                        Positioned(
+                          top: customWidth(0.036),
+                          left: customWidth(0.036),
+                          child: Container(
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .secondary
+                                    .withOpacity(.7),
+                                borderRadius: BorderRadius.circular(4)),
+                            child: Text(
+                              _product.discount.toStringAsFixed(2),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .copyWith(
+                                    color: ThemeAndColor.whiteColor,
+                                  ),
+                            ),
+                          ),
+                        ),
+                        //Favourit button
+                        Positioned(
+                          top: customWidth(-.01),
+                          right: customWidth(-0.02),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4)),
+                            child: IconButton(
+                              icon: _product.isFavourite!
+                                  ? Icon(
+                                      FontAwesomeIcons.solidHeart,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      size:
+                                          _publicController.size.value * 0.055,
+                                    )
+                                  : Icon(
+                                      FontAwesomeIcons.heart,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      size:
+                                          _publicController.size.value * 0.055,
+                                    ),
+                              onPressed: () {
+                                _productController
+                                    .toggleFavouriteStatus(widget.id);
+                                Fluttertoast.showToast(
+                                    msg: _product.isFavourite!
+                                        ? "Added to Wishlist"
+                                        : "Remove from Wishlist",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1);
+                              },
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  )
-                ],
-              );
-            },
-          )),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Text(
+                    _product.title,
+                    overflow: TextOverflow.fade,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 10),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "\u{09F3}${_product.price.toStringAsFixed(2)}",
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        discountPrice == 0
+                            ? ""
+                            : "\u{09F3}${discountPrice.toStringAsFixed(2)}",
+                        style: const TextStyle(
+                            decoration: TextDecoration.lineThrough),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
