@@ -74,16 +74,16 @@ class CategoryController extends GetxController {
   ];
 
   List<String> mainCategory = [
-    "Category",
-    "Category",
-    "Category",
-    "Category",
-    "Category",
-    "Category",
-    "Category",
-    "Category",
-    "Category",
-    "Category",
+    "Category1",
+    "Category2",
+    "Category3",
+    "Category4",
+    "Category5",
+    "Category6",
+    "Category7",
+    "Category8",
+    "Category9",
+    "Category10",
   ];
   List<String> subCategory = [
     "Sub Category",

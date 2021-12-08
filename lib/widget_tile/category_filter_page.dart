@@ -88,11 +88,14 @@ class _CategoryFilterPageState extends State<CategoryFilterPage> {
                         ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(FontAwesomeIcons.windowClose),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(FontAwesomeIcons.windowClose),
+                      ),
                     ),
                   ],
                 ),

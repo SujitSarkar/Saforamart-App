@@ -33,20 +33,18 @@ class _ProductGridState extends State<ProductGrid> {
   final CartController cartController = Get.find();
 
   late Product _product;
-  double discountPrice = 0.0;
 
   Color animateBGColor = ThemeAndColor.themeColor;
   Color animateFGColor = ThemeAndColor.whiteColor;
   bool isAnimate = false;
+  bool isDelayedAnimate = false;
 
   double animateWith = customWidth(0.08);
-  double animatePositionRight = customWidth(0.02);
 
   animationOpne() {
     setState(() {
       isAnimate = true;
       animateWith = customWidth(.29);
-      animatePositionRight = customWidth(.02);
     });
   }
 
@@ -54,7 +52,6 @@ class _ProductGridState extends State<ProductGrid> {
     setState(() {
       isAnimate = false;
       animateWith = customWidth(0.08);
-      animatePositionRight = customWidth(0.02);
     });
   }
 
@@ -63,17 +60,22 @@ class _ProductGridState extends State<ProductGrid> {
     super.initState();
     _product = _productController.findProductById(widget.id);
     isProductAddedToCart.value = _product.isFavourite!;
-    discountPrice =
-        _product.price - ((_product.price / 100) * _product.discount);
+    // discountPrice =
+    //     _product.price - ((_product.price / 100) * _product.discount);
   }
 
   var isProductAddedToCart = false.obs;
+  void delayeAnimate() {
+    Future.delayed(Duration(milliseconds: 500))
+        .then((value) => setState(() => isDelayedAnimate = !isDelayedAnimate));
+    print("Delayed................$isDelayedAnimate");
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: customWidth(0.4),
-      height: customWidth(0.35),
+      width: customWidth(0.45),
+      height: customWidth(0.5),
       child: GetBuilder<ProductController>(
         init: ProductController(),
         initState: (_) {
@@ -91,35 +93,18 @@ class _ProductGridState extends State<ProductGrid> {
                 Card(
                   elevation: 3,
                   child: Container(
-                    width: customWidth(0.4),
-                    height: customWidth(0.35),
+                    width: customWidth(0.45),
+                    height: customWidth(0.5),
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(_product.images[0]),
                             fit: BoxFit.contain)),
                     child: Stack(
+                      clipBehavior: Clip.none,
                       children: [
-                        Visibility(
-                          visible: isAnimate,
-                          child: Positioned(
-                            bottom: customWidth(.06),
-                            right: customWidth(-.02),
-                            child: IconButton(
-                                padding: const EdgeInsets.all(0),
-                                alignment: Alignment.center,
-                                icon: Icon(
-                                  FontAwesomeIcons.solidWindowClose,
-                                  color: animateBGColor,
-                                  size: customWidth(0.065),
-                                ),
-                                onPressed: () {
-                                  animationClose();
-                                }),
-                          ),
-                        ),
                         Positioned(
                           bottom: customWidth(.01),
-                          right: animatePositionRight,
+                          right: customWidth(.1),
                           child: AnimatedContainer(
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 500),
@@ -127,18 +112,43 @@ class _ProductGridState extends State<ProductGrid> {
                             width: animateWith,
                             height: customWidth(0.08),
                             decoration: BoxDecoration(
-                                color: isProductAddedToCart.isTrue
-                                    ? animateFGColor
-                                    : animateBGColor,
-                                borderRadius:
-                                    BorderRadius.circular(customWidth(0.063))),
+                              borderRadius: BorderRadius.circular(
+                                customWidth(0.063),
+                              ),
+                              border: Border.all(
+                                color: isAnimate
+                                    ? ThemeAndColor.themeColor
+                                    : Colors.transparent,
+                              ),
+                              color: Colors.white,
+                            ),
                             child: isAnimate
-                                ? Row(
-                                    children: [
-                                      ProductAmountBtns(
-                                        productId: widget.id,
-                                      ),
-                                    ],
+                                ? Visibility(
+                                    visible: isDelayedAnimate,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ProductAmountInc(
+                                          productId: widget.id,
+                                          gap: .025,
+                                          isRounded: false,
+                                          iconSize: customWidth(.05),
+                                          textSize: customWidth(.04),
+                                        ),
+                                        InkWell(
+                                          child: Icon(
+                                            FontAwesomeIcons.times,
+                                            color: animateBGColor,
+                                            size: customWidth(0.05),
+                                          ),
+                                          onTap: () {
+                                            animationClose();
+                                            delayeAnimate();
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   )
                                 : Visibility(
                                     visible: !isAnimate,
@@ -146,17 +156,20 @@ class _ProductGridState extends State<ProductGrid> {
                                         padding: const EdgeInsets.all(0),
                                         alignment: Alignment.center,
                                         icon: Icon(
-                                          LineAwesomeIcons
-                                              .shopping_cart_arrow_down,
-                                          color: isProductAddedToCart.isFalse
-                                              ? animateFGColor
-                                              : animateBGColor,
-                                          size: customWidth(0.055),
+                                          isProductAddedToCart.isFalse
+                                              ? LineAwesomeIcons
+                                                  .shopping_cart_arrow_down
+                                              : FontAwesomeIcons.cartArrowDown,
+                                          color: ThemeAndColor.themeColor,
+                                          size: isProductAddedToCart.isFalse
+                                              ? customWidth(0.055)
+                                              : customWidth(0.05),
                                         ),
                                         onPressed: () {
                                           setState(() {
                                             isAnimate = true;
                                           });
+                                          delayeAnimate();
                                           animationOpne();
                                           isProductAddedToCart.toggle();
                                           cartController.addItem(
@@ -172,31 +185,37 @@ class _ProductGridState extends State<ProductGrid> {
                           ),
                         ),
                         //discount percent
-                        Positioned(
-                          top: customWidth(0.036),
-                          left: customWidth(0.036),
-                          child: Container(
-                            padding: const EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondary
-                                    .withOpacity(.7),
-                                borderRadius: BorderRadius.circular(4)),
-                            child: Text(
-                              _product.discount.toStringAsFixed(2),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(
-                                    color: ThemeAndColor.whiteColor,
-                                  ),
+                        Visibility(
+                          visible: !(_product.discount == 0.0),
+                          child: Positioned(
+                            top: customWidth(-0.02),
+                            left: customWidth(-0.02),
+                            child: Container(
+                              padding: EdgeInsets.all(customWidth(.01)),
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondary
+                                      .withOpacity(.5),
+                                  borderRadius:
+                                      BorderRadius.circular(customWidth(.02))),
+                              child: Text(
+                                "${_product.discount.toStringAsFixed(0)}\u{0025}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline1!
+                                    .copyWith(
+                                      color: ThemeAndColor.whiteColor,
+                                      fontSize: customWidth(.03),
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
                             ),
                           ),
                         ),
                         //Favourit button
                         Positioned(
-                          top: customWidth(-.01),
+                          bottom: customWidth(-.015),
                           right: customWidth(-0.02),
                           child: Container(
                             decoration: BoxDecoration(
@@ -235,32 +254,59 @@ class _ProductGridState extends State<ProductGrid> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: customWidth(.012),
+                ),
+                //Product title section....................
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  padding: EdgeInsets.symmetric(horizontal: customWidth(.01)),
                   child: Text(
                     _product.title,
-                    overflow: TextOverflow.fade,
+                    overflow: TextOverflow.ellipsis,
                     maxLines: 1,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 10),
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontSize: customWidth(.035),
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 5.0),
+                SizedBox(
+                  height: customWidth(.012),
+                ),
+                //Price section..............
+                Container(
+                  alignment: Alignment.bottomLeft,
+                  padding: EdgeInsets.only(
+                      bottom: customWidth(.015), left: customWidth(.01)),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      //discount price
+
+                      Text(
+                        _product.discount == 0.0
+                            ? ""
+                            : "\u{09F3}${(_product.price - ((_product.price / 100) * _product.discount)).toStringAsFixed(2)}",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(
+                        width: customWidth(.02),
+                      ),
+                      //orginal price
                       Text(
                         "\u{09F3}${_product.price.toStringAsFixed(2)}",
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+                        style: _product.discount == 0.0
+                            ? const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              )
+                            : const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                decoration: TextDecoration.lineThrough,
+                                color: Colors.grey,
+                              ),
                       ),
-                      Text(
-                        discountPrice == 0
-                            ? ""
-                            : "\u{09F3}${discountPrice.toStringAsFixed(2)}",
-                        style: const TextStyle(
-                            decoration: TextDecoration.lineThrough),
-                      )
                     ],
                   ),
                 )

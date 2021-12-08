@@ -25,7 +25,7 @@ class ProductController extends GetxController {
       rating: 4.8,
       isFavourite: true,
       isPopular: true,
-      discount: 0.0,
+      discount: 20.0,
     ),
     Product(
       id: 2,

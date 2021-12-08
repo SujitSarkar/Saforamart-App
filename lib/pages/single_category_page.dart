@@ -114,7 +114,7 @@ class _SingleCategoryPageState extends State<SingleCategoryPage> {
                       //     );
                       //   },
                       // );
-                      Get.to(CategoryFilterPage());
+                      Get.to(() => const CategoryFilterPage());
                     },
                     icon: const Icon(Icons.filter_list),
                     label: const Text("Filter"),
@@ -126,9 +126,8 @@ class _SingleCategoryPageState extends State<SingleCategoryPage> {
           Expanded(
             flex: 70,
             child: Container(
-              color: Colors.grey.shade100,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+              padding: EdgeInsets.symmetric(
+                  horizontal: customWidth(.02), vertical: customWidth(.02)),
               child: singlePageCategoryGrid(),
             ),
           ),
@@ -202,9 +201,12 @@ class _SingleCategoryPageState extends State<SingleCategoryPage> {
             crossAxisCount: 2,
             crossAxisSpacing: 10.0,
             mainAxisSpacing: 10.0,
-            childAspectRatio: 0.9),
+            childAspectRatio: 0.7),
         itemCount: 4,
-        itemBuilder: (_, index) =>
-            ProductGrid(id: _productController.items[index].id));
+        itemBuilder: (_, index) => Padding(
+              padding: EdgeInsets.only(
+                  left: customWidth(.01), top: customWidth(.01)),
+              child: ProductGrid(id: _productController.items[index].id),
+            ));
   }
 }
