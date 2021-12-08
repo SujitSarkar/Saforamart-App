@@ -5,7 +5,7 @@ import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/controller/user_controller.dart';
 import 'package:safora_mart/pages/wishlist_page.dart';
 import 'package:safora_mart/pages/edit_profile.dart';
-import 'package:safora_mart/pages/order_page.dart';
+import 'package:safora_mart/pages/order_history_page.dart';
 import 'package:safora_mart/pages/payment_method.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/drawer.dart';
@@ -44,7 +44,7 @@ class AccountPage extends StatelessWidget {
         Get.to(() => WishListPage());
         break;
       case 4:
-        Get.to(() => OrderScreen());
+        Get.to(() => OrderHistoryPage());
         break;
       case 5:
         Get.to(() => PaymentMethodPage());

@@ -51,6 +51,8 @@ class CartController extends GetxController {
     return amount;
   }
 
+  var productQuantity = 0.obs;
+
   void removeitem(int productId) {
     _items.remove(productId);
     update();

@@ -137,6 +137,11 @@ class _NavCategoryPageState extends State<NavCategoryPage>
                       cat,
                       style: Theme.of(context).textTheme.headline3!.copyWith(
                             fontSize: 14,
+                            color:
+                                _categoryController.mainCategory[_tabIndex] ==
+                                        cat
+                                    ? ThemeAndColor.themeColor
+                                    : Colors.black,
                           ),
                     ),
                   ))
@@ -233,7 +238,7 @@ class _NavCategoryPageState extends State<NavCategoryPage>
             crossAxisCount: 2,
             crossAxisSpacing: 10.0,
             mainAxisSpacing: 10.0,
-            childAspectRatio: 0.9),
+            childAspectRatio: 0.65),
         itemCount: 10,
         itemBuilder: (_, index) => const ProductGrid(id: 1));
   }

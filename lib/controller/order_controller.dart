@@ -19,6 +19,7 @@ class OrderController extends GetxController {
       orderId: 1,
       status: "Pending",
       amount: 1500,
+      deliveyCharge: 30.00,
       products: [
         CartItem(
           id: "1",
@@ -42,7 +43,8 @@ class OrderController extends GetxController {
     Order(
       orderId: 2,
       status: "Delivared",
-      amount: 330,
+      amount: 1200,
+      deliveyCharge: 30.00,
       products: [
         CartItem(
           id: "1",
@@ -61,6 +63,7 @@ class OrderController extends GetxController {
     String status,
     List<CartItem> cartProducts,
     double total,
+    double? deliveyCharge,
     DateTime purcheaseTime,
     DateTime delivaryTime,
   ) {
@@ -72,7 +75,8 @@ class OrderController extends GetxController {
             amount: total,
             status: status,
             delivaryTime: purcheaseTime,
-            purcheaseTime: purcheaseTime));
+            purcheaseTime: purcheaseTime,
+            deliveyCharge: deliveyCharge ?? 0.0));
     update();
   }
 }
