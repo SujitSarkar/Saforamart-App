@@ -53,28 +53,68 @@ class _OrderHistoryItemDetailState extends State<OrderHistoryItemDetail> {
               currentStep: _currentIndex,
               steps: [
                 Step(
-                  title: Text("Packaging"),
+                  title: GestureDetector(
+                    onTap: () => setState(() {
+                      _currentIndex = 0;
+                    }),
+                    child: Text("Packaging"),
+                  ),
                   content: Text("Image",
                       style: Theme.of(context).textTheme.headline1),
-                  state: StepState.complete,
-                  isActive: true,
+                  state: _currentIndex > 0
+                      ? StepState.complete
+                      : _currentIndex == 0
+                          ? StepState.editing
+                          : StepState.indexed,
+                  isActive: _currentIndex >= 0,
                 ),
                 Step(
-                  title: Text("Pending"),
+                  title: GestureDetector(
+                    onTap: () => setState(() {
+                      _currentIndex = 1;
+                    }),
+                    child: Text("Pending"),
+                  ),
                   content: Text("Image",
                       style: Theme.of(context).textTheme.headline1),
-                  state: StepState.indexed,
-                  isActive: true,
+                  state: _currentIndex > 1
+                      ? StepState.complete
+                      : _currentIndex == 1
+                          ? StepState.editing
+                          : StepState.indexed,
+                  isActive: _currentIndex >= 1,
                 ),
                 Step(
-                  title: Text("Deliver boy on the way"),
+                  title: GestureDetector(
+                    onTap: () => setState(() {
+                      _currentIndex = 2;
+                    }),
+                    child: Text("Deliver boy on the way"),
+                  ),
                   content: Text("Image",
                       style: Theme.of(context).textTheme.headline1),
+                  state: _currentIndex > 2
+                      ? StepState.complete
+                      : _currentIndex == 2
+                          ? StepState.editing
+                          : StepState.indexed,
+                  isActive: _currentIndex >= 2,
                 ),
                 Step(
-                  title: Text("Delivered"),
+                  title: GestureDetector(
+                    onTap: () => setState(() {
+                      _currentIndex = 3;
+                    }),
+                    child: Text("Delivered"),
+                  ),
                   content: Text("Image",
                       style: Theme.of(context).textTheme.headline1),
+                  state: _currentIndex > 3
+                      ? StepState.complete
+                      : _currentIndex == 3
+                          ? StepState.editing
+                          : StepState.indexed,
+                  isActive: _currentIndex >= 3,
                 ),
               ],
             )),
