@@ -201,7 +201,7 @@ class _SingleCategoryPageState extends State<SingleCategoryPage> {
             crossAxisCount: 2,
             crossAxisSpacing: 10.0,
             mainAxisSpacing: 10.0,
-            childAspectRatio: 0.7),
+            childAspectRatio: 0.6),
         itemCount: 4,
         itemBuilder: (_, index) => Padding(
               padding: EdgeInsets.only(

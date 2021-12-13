@@ -90,7 +90,11 @@ class _HomePageState extends State<HomePage>
                         ),
                   ),
                   GestureDetector(
-                    onTap: () => Get.to(() => NavCategoryPage()),
+                    onTap: () => Get.to(
+                      () => const NavCategoryPage(
+                        isFromHome: false,
+                      ),
+                    ),
                     child: Row(
                       children: [
                         Text(

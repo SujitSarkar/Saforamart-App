@@ -1,8 +1,13 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:safora_mart/controller/public_controller.dart';
+import 'package:safora_mart/pages/order_history_page.dart';
+import 'package:safora_mart/pages/payment_method.dart';
+import 'package:safora_mart/pages/wishlist_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 
 class NavigationDrawer extends StatefulWidget {
@@ -38,18 +43,50 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   child: Column(
                     children: [
                       //SizedBox(height: publicController.size.value*.07),
+                      const Divider(color: Colors.grey, height: 0.5),
+                      _functionBuilder(
+                        'Wishlist',
+                        LineAwesomeIcons.money_check,
+                        () {
+                          Get.to(() => WishListPage());
+                        },
+                      ),
 
                       const Divider(color: Colors.grey, height: 0.5),
                       _functionBuilder(
-                          'Payment Method', LineAwesomeIcons.money_check),
-                      const Divider(color: Colors.grey, height: 0.5),
-                      _functionBuilder('Refund Policy', LineAwesomeIcons.undo),
+                        'Order',
+                        LineAwesomeIcons.money_check,
+                        () {
+                          Get.to(() => OrderHistoryPage());
+                        },
+                      ),
+
                       const Divider(color: Colors.grey, height: 0.5),
                       _functionBuilder(
-                          'About Us', LineAwesomeIcons.info_circle),
+                        'Payment Method',
+                        LineAwesomeIcons.money_check,
+                        () {
+                          Get.to(() => PaymentMethodPage());
+                        },
+                      ),
                       const Divider(color: Colors.grey, height: 0.5),
                       _functionBuilder(
-                          'Privacy Policy', LineAwesomeIcons.user_secret),
+                        'Refund Policy',
+                        LineAwesomeIcons.undo,
+                        () {},
+                      ),
+                      const Divider(color: Colors.grey, height: 0.5),
+                      _functionBuilder(
+                        'About Us',
+                        LineAwesomeIcons.info_circle,
+                        () {},
+                      ),
+                      const Divider(color: Colors.grey, height: 0.5),
+                      _functionBuilder(
+                        'Privacy Policy',
+                        LineAwesomeIcons.user_secret,
+                        () {},
+                      ),
                       const Divider(color: Colors.grey, height: 0.5),
                       SizedBox(height: publicController.size.value * .04),
                     ],
@@ -92,10 +129,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
         );
       });
 
-  Widget _functionBuilder(String name, IconData iconData) =>
+  Widget _functionBuilder(String name, IconData iconData, Function onTap) =>
       GetBuilder<PublicController>(builder: (publicController) {
         return ListTile(
-          onTap: () async {},
+          onTap: () async {
+            onTap();
+          },
           leading: Icon(
             iconData,
             color: ThemeAndColor.themeColor.withOpacity(0.8),

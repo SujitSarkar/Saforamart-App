@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:safora_mart/config.dart';
 import 'package:safora_mart/controller/category_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
+import 'package:safora_mart/nav_pages/nav_category_page.dart';
 
 class CategoryGridView extends StatefulWidget {
   const CategoryGridView({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _CategoryGridViewState extends State<CategoryGridView>
 
   late final TabController _tabController;
   final List<Map> myProducts =
-      List.generate(100000, (index) => {"id": index, "name": "Product $index"})
+      List.generate(30, (index) => {"id": index, "name": "Product $index"})
           .toList();
 
   @override
@@ -38,39 +39,43 @@ class _CategoryGridViewState extends State<CategoryGridView>
           scrollDirection: Axis.horizontal,
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 200,
-              
               childAspectRatio: .8,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10),
           itemCount: 30,
           itemBuilder: (BuildContext ctx, index) {
-            return Card(
-              // color: Colors.blue.shade50,
-              elevation: 2.5,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: customWidth(.018)),
-                      child: Text(
-                        "${_categoryController.categoryItems[0]["name"]} $index",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline3!
-                            .copyWith(fontWeight: FontWeight.w500),
+            return GestureDetector(
+              onTap: () => Get.to(() => NavCategoryPage(
+                    isFromHome: false,
+                  )),
+              child: Card(
+                // color: Colors.blue.shade50,
+                elevation: 2.5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: customWidth(.018)),
+                        child: Text(
+                          "${_categoryController.categoryItems[0]["name"]} $index",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline3!
+                              .copyWith(fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Image.asset(
-                      "assets/images/snacks.png",
-                      height: customWidth(.22),
-                    ),
-                  )
-                ],
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Image.asset(
+                        "assets/images/snacks.png",
+                        height: customWidth(.22),
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           }),

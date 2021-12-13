@@ -37,24 +37,32 @@ class CartController extends GetxController {
           productImg: img,
         ),
       );
+      productQuantity.value = quantity;
     }
     update();
   }
 
-  int itemQuantity(int productId) {
-    int amount = 0;
+  void itemQuantityInc(int productId) {
     _items.forEach((key, value) {
       if (key == productId) {
-        amount = value.productQuantity;
+        productQuantity.value = value.productQuantity + 1;
       }
     });
-    return amount;
+  }
+
+  void itemQuantityDic(int productId) {
+    _items.forEach((key, value) {
+      if (key == productId) {
+        productQuantity.value = value.productQuantity - 1;
+      }
+    });
   }
 
   var productQuantity = 0.obs;
 
   void removeitem(int productId) {
     _items.remove(productId);
+    productQuantity.value = 0;
     update();
   }
 

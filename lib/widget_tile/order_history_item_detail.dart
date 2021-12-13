@@ -42,85 +42,88 @@ class _OrderHistoryItemDetailState extends State<OrderHistoryItemDetail> {
         ),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            _itemDetail(context),
-            Expanded(
-                child: Stepper(
-              controlsBuilder: (context, details) {
-                return Container();
-              },
-              currentStep: _currentIndex,
-              steps: [
-                Step(
-                  title: GestureDetector(
-                    onTap: () => setState(() {
-                      _currentIndex = 0;
-                    }),
-                    child: Text("Packaging"),
-                  ),
-                  content: Text("Image",
-                      style: Theme.of(context).textTheme.headline1),
-                  state: _currentIndex > 0
-                      ? StepState.complete
-                      : _currentIndex == 0
-                          ? StepState.editing
-                          : StepState.indexed,
-                  isActive: _currentIndex >= 0,
-                ),
-                Step(
-                  title: GestureDetector(
-                    onTap: () => setState(() {
-                      _currentIndex = 1;
-                    }),
-                    child: Text("Pending"),
-                  ),
-                  content: Text("Image",
-                      style: Theme.of(context).textTheme.headline1),
-                  state: _currentIndex > 1
-                      ? StepState.complete
-                      : _currentIndex == 1
-                          ? StepState.editing
-                          : StepState.indexed,
-                  isActive: _currentIndex >= 1,
-                ),
-                Step(
-                  title: GestureDetector(
-                    onTap: () => setState(() {
-                      _currentIndex = 2;
-                    }),
-                    child: Text("Deliver boy on the way"),
-                  ),
-                  content: Text("Image",
-                      style: Theme.of(context).textTheme.headline1),
-                  state: _currentIndex > 2
-                      ? StepState.complete
-                      : _currentIndex == 2
-                          ? StepState.editing
-                          : StepState.indexed,
-                  isActive: _currentIndex >= 2,
-                ),
-                Step(
-                  title: GestureDetector(
-                    onTap: () => setState(() {
-                      _currentIndex = 3;
-                    }),
-                    child: Text("Delivered"),
-                  ),
-                  content: Text("Image",
-                      style: Theme.of(context).textTheme.headline1),
-                  state: _currentIndex > 3
-                      ? StepState.complete
-                      : _currentIndex == 3
-                          ? StepState.editing
-                          : StepState.indexed,
-                  isActive: _currentIndex >= 3,
-                ),
-              ],
-            )),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _itemDetail(context),
+              _orderStepper(),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Stepper _orderStepper() {
+    return Stepper(
+      physics: const NeverScrollableScrollPhysics(),
+      controlsBuilder: (context, {onStepCancel, onStepContinue}) {
+        return Container();
+      },
+      currentStep: _currentIndex,
+      steps: [
+        Step(
+          title: GestureDetector(
+            onTap: () => setState(() {
+              _currentIndex = 0;
+            }),
+            child: const Text("Packaging"),
+          ),
+          content: Container(),
+          state: _currentIndex > 0
+              ? StepState.complete
+              : _currentIndex == 0
+                  ? StepState.editing
+                  : StepState.indexed,
+          isActive: _currentIndex >= 0,
+        ),
+        Step(
+          title: GestureDetector(
+            onTap: () => setState(() {
+              _currentIndex = 1;
+            }),
+            child: const Text("Pending"),
+          ),
+          content: Container(),
+          state: _currentIndex > 1
+              ? StepState.complete
+              : _currentIndex == 1
+                  ? StepState.editing
+                  : StepState.indexed,
+          isActive: _currentIndex >= 1,
+        ),
+        Step(
+          title: GestureDetector(
+            onTap: () => setState(() {
+              _currentIndex = 2;
+            }),
+            child: const Text("Deliver boy on the way"),
+          ),
+          content: Container(),
+          state: _currentIndex > 2
+              ? StepState.complete
+              : _currentIndex == 2
+                  ? StepState.editing
+                  : StepState.indexed,
+          isActive: _currentIndex >= 2,
+        ),
+        Step(
+          title: GestureDetector(
+            onTap: () => setState(() {
+              _currentIndex = 3;
+            }),
+            child: const Text("Delivered"),
+          ),
+          content: Container(),
+          state: _currentIndex > 3
+              ? StepState.complete
+              : _currentIndex == 3
+                  ? StepState.editing
+                  : StepState.indexed,
+          isActive: _currentIndex >= 3,
+        ),
+      ],
     );
   }
 
@@ -128,6 +131,7 @@ class _OrderHistoryItemDetailState extends State<OrderHistoryItemDetail> {
     return Card(
       margin: EdgeInsets.all(10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: customWidth(1),

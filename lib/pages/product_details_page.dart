@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 import 'package:safora_mart/config.dart';
 import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/product_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/models/product.dart';
+import 'package:safora_mart/pages/product_question_page.dart';
+import 'package:safora_mart/pages/product_reviews_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import 'package:safora_mart/widget_tile/category_wise_product.dart';
 import 'package:safora_mart/widget_tile/product_amount_inc.dart';
@@ -30,7 +33,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   final ProductController _productController = Get.find();
 
-  final CartController cartController = Get.find();
+  final CartController _cartController = Get.find();
 
   int productSizeIndex = 0;
 
@@ -99,7 +102,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                       init: CartController(),
                       builder: (_) {
                         return Text(
-                          cartController.itemCount.toString(),
+                          _cartController.itemCount.toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: _publicController.size.value * .02,
@@ -111,7 +114,9 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                   ),
                 )
               ]),
-              onTap: () => Get.to(() => const CartPage()),
+              onTap: () => Get.to(() => const CartPage(
+                    isFromHome: false,
+                  )),
             ),
           ),
           //Wishlist button and functionality...
@@ -193,9 +198,39 @@ class _ProductDetailPageState extends State<ProductDetailPage>
               SizedBox(
                 height: _publicController.size.value * 0.06,
               ),
-              tabBarSection(context),
+              description(),
               const Divider(
                 thickness: 1.5,
+              ),
+              MaterialButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => ratingDialog(),
+                  );
+                },
+                child: const Text("Give product rating"),
+                color: ThemeAndColor.starColorList[1],
+                textColor: Colors.white,
+                minWidth: double.infinity,
+              ),
+              MaterialButton(
+                onPressed: () => Get.to(() => ProductReviewsPage()),
+                child: const Text("Show product reviews"),
+                color: ThemeAndColor.themeColor,
+                textColor: Colors.white,
+                minWidth: double.infinity,
+              ),
+              MaterialButton(
+                onPressed: () => Get.to(() => ProductQuestionPage()),
+                child: const Text("Show product related question"),
+                textColor: ThemeAndColor.themeColor,
+                minWidth: double.infinity,
+                shape: BeveledRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                    side: const BorderSide(
+                      color: ThemeAndColor.themeColor,
+                    )),
               ),
               const CategoryWiseProduct(categoryTitle: "Related Products"),
               SizedBox(
@@ -205,6 +240,39 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           ),
         ),
       ),
+    );
+  }
+
+  RatingDialog ratingDialog() {
+    return RatingDialog(
+      initialRating: 1.0,
+      starSize: customWidth(.1),
+      starColor: ThemeAndColor.themeColor,
+      title: Text(
+        'Give this Product Rating',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.headline1!.copyWith(
+              fontSize: customWidth(.05),
+            ),
+      ),
+      // message: const Text(
+      //   'Tap a star to set your rating. Add more description here if you want.',
+      //   textAlign: TextAlign.center,
+      //   style: TextStyle(fontSize: 15),
+      // ),
+      image: Container(
+        margin: EdgeInsets.only(right: 15),
+        padding: EdgeInsets.all(8),
+        height: customWidth(.4),
+        width: customWidth(.4),
+        child: Image.asset(_item.images[0]),
+      ),
+      submitButtonText: 'Submit',
+      commentHint: 'Write your feedback here...',
+      onCancelled: () => print('cancelled'),
+      onSubmitted: (response) {
+        print('rating: ${response.rating}, comment: ${response.comment}');
+      },
     );
   }
 
@@ -291,38 +359,53 @@ class _ProductDetailPageState extends State<ProductDetailPage>
         ),
         Expanded(
           child: Container(
+            alignment: Alignment.center,
             margin: EdgeInsets.only(left: _publicController.size.value * 0.01),
-            child: ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(LineAwesomeIcons.shopping_bag),
-                    Obx(() => Text(
-                          isProductAddedToCart.value == true
-                              ? "Remove from CART"
-                              : "ADD TO CART",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4!
-                              .copyWith(
-                                  color: ThemeAndColor.whiteColor,
-                                  fontSize: isProductAddedToCart.value == true
-                                      ? _publicController.size.value * 0.03
-                                      : _publicController.size.value * 0.033),
-                        )),
-                  ],
-                ),
-                onPressed: () {
-                  isProductAddedToCart.toggle();
-                  cartController.addItem(
-                    _item.id,
-                    _item.price,
-                    _item.title,
-                    1,
-                    _item.images[0],
-                  );
-                  print("Product added to Cart...");
-                }),
+            child: GetBuilder<CartController>(
+              init: CartController(),
+              initState: (_) {},
+              builder: (controller) {
+                return controller.productQuantity.value > 0
+                    ? ProductAmountInc(
+                        productId: _item.id,
+                        iconColor: ThemeAndColor.themeColor,
+                      )
+                    : ElevatedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(LineAwesomeIcons.shopping_bag),
+                            Obx(() => Text(
+                                  "ADD TO CART",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                          color: ThemeAndColor.whiteColor,
+                                          fontSize: isProductAddedToCart
+                                                      .value ==
+                                                  true
+                                              ? _publicController.size.value *
+                                                  0.03
+                                              : _publicController.size.value *
+                                                  0.033),
+                                )),
+                          ],
+                        ),
+                        onPressed: () {
+                          isProductAddedToCart.toggle();
+                          _cartController.addItem(
+                            _item.id,
+                            _item.price,
+                            _item.title,
+                            1,
+                            _item.images[0],
+                          );
+                          print("Product added to Cart...");
+                        },
+                      );
+              },
+            ),
           ),
         ),
       ],
@@ -433,12 +516,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                     starSize: _publicController.size.value * 0.05)
               ],
             ),
-            const Text(
-              "Not In Stock",
-              style: TextStyle(
-                color: ThemeAndColor.secondaryColor,
-              ),
-            ),
           ],
         ),
       );
@@ -446,7 +523,10 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   Text productTitleRow() {
     return Text(
       _item.title,
-      style: Theme.of(context).textTheme.headline1,
+      style: Theme.of(context)
+          .textTheme
+          .headline1!
+          .copyWith(fontSize: customWidth(.05)),
     );
   }
 
@@ -492,7 +572,16 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                       fontSize: _publicController.size.value * .05,
                       color: Colors.black,
                     ),
-              )
+              ),
+              SizedBox(
+                width: customWidth(.38),
+              ),
+              const Text(
+                "Not In Stock",
+                style: TextStyle(
+                  color: ThemeAndColor.secondaryColor,
+                ),
+              ),
             ],
           ),
 
@@ -500,9 +589,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             height: _publicController.size.value * .05,
           ),
           //Product price and amount
-          ProductAmountInc(
-            productId: _item.id,
-          ),
         ],
       );
 
@@ -535,8 +621,19 @@ class _ProductDetailPageState extends State<ProductDetailPage>
         height: _publicController.size.value * 0.35,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Container(
+              padding: EdgeInsets.all(_publicController.size.value * 0.02),
+              decoration: BoxDecoration(color: Colors.grey.shade200),
+              child: Text(
+                "Product Description",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline2!
+                    .copyWith(fontSize: customWidth(.05)),
+              ),
+            ),
             Padding(
               padding: EdgeInsets.all(_publicController.size.value * 0.02),
               child: const Text(

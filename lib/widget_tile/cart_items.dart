@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:safora_mart/config.dart';
@@ -7,9 +5,7 @@ import 'package:safora_mart/controller/cart_controller.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/pages/product_details_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
-import 'package:safora_mart/widget_tile/product_amount_btns.dart';
 import 'package:safora_mart/widget_tile/product_amount_inc.dart';
-import 'package:safora_mart/widget_tile/product_amount_widget.dart';
 
 class CartItem extends StatelessWidget {
   final String id;

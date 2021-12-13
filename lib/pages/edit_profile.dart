@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:find_dropdown/find_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/controller/user_controller.dart';
 import 'package:safora_mart/models/country.dart';
@@ -36,6 +39,8 @@ class _EditProfileState extends State<EditProfile> {
 
   late String countryName = "";
 
+  File? imageFile;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +74,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: Column(
                   children: [
                     Stack(
+                      alignment: Alignment.bottomCenter,
                       children: [
                         Container(
                           margin: const EdgeInsets.all(10.0),
@@ -81,31 +87,41 @@ class _EditProfileState extends State<EditProfile> {
                               color: Theme.of(context).primaryColorLight,
                               width: 2.2,
                             ),
-                            image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                "https://i.pinimg.com/originals/d5/b0/4c/d5b04cc3dcd8c17702549ebc5f1acf1a.png",
-                              ),
-                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                _publicController.size.value / 2),
+                            child: imageFile == null
+                                ? Image.network(
+                                    "https://i.pinimg.com/originals/d5/b0/4c/d5b04cc3dcd8c17702549ebc5f1acf1a.png",
+                                    fit: BoxFit.cover)
+                                : Image.file(
+                                    imageFile!,
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                         ),
                         Positioned(
                           bottom: _publicController.size.value / 12,
-                          left: _publicController.size.value / 5.5,
                           child: SizedBox(
                             height: _publicController.size.value / 15,
-                            child: Opacity(
-                              opacity: 1,
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: Image.asset(
-                                  'assets/images/camera-icon.png',
-                                  fit: BoxFit.contain,
-                                  width: _publicController.size.value * 0.3,
-                                  height: _publicController.size.value * 0.3,
-                                ),
-                              ),
-                            ),
+                            child: GestureDetector(
+                                onTap: () async {
+                                  ImagePicker _picker = ImagePicker();
+                                  await _picker
+                                      .pickImage(source: ImageSource.gallery)
+                                      .then((xFile) {
+                                    if (xFile != null) {
+                                      setState(() {
+                                        imageFile = File(xFile.path);
+                                      });
+                                    }
+                                  });
+                                },
+                                child: const Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white,
+                                )),
                           ),
                         )
                       ],

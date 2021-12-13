@@ -28,6 +28,8 @@ dependencies:
   fluttertoast: ^8.0.8
   find_dropdown: ^1.0.0
   flutter_svg: ^0.23.0+1
+  rating_dialog: ^2.0.3
+  image_picker: ^0.8.4+4
 
 dev_dependencies:
   flutter_test:

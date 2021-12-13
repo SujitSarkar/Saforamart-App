@@ -31,10 +31,10 @@ class OrderCompletePage extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(customWidth(0.04)),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              thankyou(context),
+              _thankyou(context),
               SizedBox(
                 height: customWidth(0.04),
               ),
@@ -75,7 +75,7 @@ class OrderCompletePage extends StatelessWidget {
     );
   }
 
-  Container thankyou(BuildContext context) {
+  Container _thankyou(BuildContext context) {
     return Container(
       height: customWidth(.35),
       width: customWidth(.9),

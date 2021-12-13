@@ -12,7 +12,9 @@ import 'package:safora_mart/widget_tile/drawer.dart';
 import 'package:safora_mart/widget_tile/product_grid.dart';
 
 class NavCategoryPage extends StatefulWidget {
-  const NavCategoryPage({Key? key}) : super(key: key);
+  const NavCategoryPage({Key? key, required this.isFromHome}) : super(key: key);
+
+  final bool isFromHome;
 
   @override
   _NavCategoryPageState createState() => _NavCategoryPageState();
@@ -63,6 +65,10 @@ class _NavCategoryPageState extends State<NavCategoryPage>
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.grey),
         elevation: 0.0,
+        leading: !widget.isFromHome
+            ? IconButton(
+                onPressed: () => Get.back(), icon: Icon(Icons.arrow_back))
+            : null,
         title: Text('Category',
             style: Theme.of(context)
                 .textTheme
@@ -104,7 +110,7 @@ class _NavCategoryPageState extends State<NavCategoryPage>
         ],
         bottom: _tabBar(publicController),
       ),
-      drawer: NavigationDrawer(),
+      drawer: widget.isFromHome ? NavigationDrawer() : null,
       body: _bodyUI(publicController, size),
     );
   }
@@ -238,7 +244,7 @@ class _NavCategoryPageState extends State<NavCategoryPage>
             crossAxisCount: 2,
             crossAxisSpacing: 10.0,
             mainAxisSpacing: 10.0,
-            childAspectRatio: 0.65),
+            childAspectRatio: 0.6),
         itemCount: 10,
         itemBuilder: (_, index) => const ProductGrid(id: 1));
   }
