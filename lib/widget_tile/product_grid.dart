@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,7 +11,6 @@ import 'package:safora_mart/controller/public_controller.dart';
 import 'package:safora_mart/models/product.dart';
 import 'package:safora_mart/pages/product_details_page.dart';
 import 'package:safora_mart/static_variavles/theme_and_color.dart';
-import 'package:safora_mart/widget_tile/product_amount_btns.dart';
 import 'package:safora_mart/widget_tile/product_amount_inc.dart';
 
 import '../config.dart';
@@ -30,7 +30,7 @@ class ProductGrid extends StatefulWidget {
 class _ProductGridState extends State<ProductGrid> {
   final PublicController _publicController = Get.find();
   final ProductController _productController = Get.find();
-  final CartController cartController = Get.find();
+  final CartController _cartController = Get.find();
 
   late Product _product;
 
@@ -75,7 +75,7 @@ class _ProductGridState extends State<ProductGrid> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: customWidth(0.45),
-      height: customWidth(0.5),
+      height: customWidth(0.55),
       child: GetBuilder<ProductController>(
         init: ProductController(),
         initState: (_) {
@@ -94,7 +94,7 @@ class _ProductGridState extends State<ProductGrid> {
                   elevation: 3,
                   child: Container(
                     width: customWidth(0.45),
-                    height: customWidth(0.5),
+                    height: customWidth(0.55),
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(_product.images[0]),
@@ -172,7 +172,7 @@ class _ProductGridState extends State<ProductGrid> {
                                           delayeAnimate();
                                           animationOpne();
                                           isProductAddedToCart.toggle();
-                                          cartController.addItem(
+                                          _cartController.addItem(
                                             _product.id,
                                             _product.price,
                                             _product.title,
@@ -260,14 +260,17 @@ class _ProductGridState extends State<ProductGrid> {
                 //Product title section....................
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: customWidth(.01)),
-                  child: Text(
-                    _product.title,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        fontSize: customWidth(.035),
-                        fontWeight: FontWeight.w500),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      _product.title,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                          fontSize: customWidth(.035),
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -309,7 +312,19 @@ class _ProductGridState extends State<ProductGrid> {
                       ),
                     ],
                   ),
-                )
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: RatingBarIndicator(
+                    itemBuilder: (context, index) => Icon(
+                      Icons.star,
+                      color: ThemeAndColor.themeColor,
+                    ),
+                    rating: _product.rating,
+                    itemCount: 5,
+                    itemSize: customWidth(.04),
+                  ),
+                ),
               ],
             ),
           );

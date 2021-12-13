@@ -10,8 +10,12 @@ import 'package:safora_mart/nav_pages/cart_page.dart';
 class Widgets {
   static final List<Widget> mainNavBodyList = [
     const HomePage(),
-    NavCategoryPage(),
-    CartPage(),
+    const NavCategoryPage(
+      isFromHome: true,
+    ),
+    const CartPage(
+      isFromHome: true,
+    ),
     AccountPage(),
   ];
 

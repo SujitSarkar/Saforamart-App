@@ -40,6 +40,14 @@ class ThemeAndColor {
       )).copyWith(
         secondary: secondaryColor,
       ),
+      appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black54),
+          titleTextStyle: TextStyle(
+            color: Colors.black54,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          )),
       fontFamily: 'ubuntu',
       canvasColor: Colors.transparent,
       textTheme: const TextTheme(

@@ -1,8 +1,8 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:get/state_manager.dart';
-import 'package:safora_mart/models/User.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:safora_mart/models/country.dart';
 
 class UserController extends GetxController {
@@ -44,5 +44,15 @@ class UserController extends GetxController {
     print("Data: $listData");
 
     _countries = listData.data;
+  }
+
+  Future getImage() async {
+    ImagePicker _picker = ImagePicker();
+
+    await _picker.pickImage(source: ImageSource.gallery).then((xFile) {
+      if (xFile != null) {
+        return File(xFile.path);
+      }
+    });
   }
 }

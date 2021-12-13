@@ -37,21 +37,20 @@ class _OrderHistoryItemState extends State<OrderHistoryItem> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: EdgeInsets.all(customWidth(.025)),
-                  child: Text(
-                    "Order ID: ${widget.order.orderId.toString()}",
-                    style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.black,
-                        ),
+                GestureDetector(
+                  onTap: () =>
+                      Get.to(() => OrderHistoryItemDetail(order: widget.order)),
+                  child: Padding(
+                    padding: EdgeInsets.all(customWidth(.025)),
+                    child: Text(
+                      "Order ID: ${widget.order.orderId.toString()}",
+                      style: Theme.of(context).textTheme.headline3!.copyWith(
+                            color: Colors.black,
+                          ),
+                    ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    Get.to(() => OrderHistoryItemDetail(order: widget.order));
-                  },
-                  icon: Icon(Icons.arrow_right),
-                ),
+                const Icon(Icons.arrow_right),
               ],
             ),
           ),

@@ -69,7 +69,7 @@ class _CategoryWiseProductState extends State<CategoryWiseProduct> {
             ]),
           ),
           SizedBox(
-            height: _publicController.size.value * .72,
+            height: _publicController.size.value * .78,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,

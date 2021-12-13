@@ -13,7 +13,9 @@ import 'package:safora_mart/widget_tile/drawer.dart';
 import 'package:safora_mart/widget_tile/nothing_to_show.dart';
 
 class CartPage extends StatefulWidget {
-  const CartPage({Key? key}) : super(key: key);
+  const CartPage({Key? key, required this.isFromHome}) : super(key: key);
+
+  final bool isFromHome;
 
   @override
   _CartPageState createState() => _CartPageState();
@@ -32,6 +34,10 @@ class _CartPageState extends State<CartPage> {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.grey.shade800),
         elevation: 0.0,
+        leading: !widget.isFromHome
+            ? IconButton(
+                onPressed: () => Get.back(), icon: Icon(Icons.arrow_back))
+            : null,
         title: Text('Your Cart', style: Theme.of(context).textTheme.headline2),
         actions: [
           Center(
@@ -69,7 +75,7 @@ class _CartPageState extends State<CartPage> {
           SizedBox(width: customWidth(.03)),
         ],
       ),
-      drawer: const NavigationDrawer(),
+      drawer: widget.isFromHome ? const NavigationDrawer() : null,
       body: bodyUI(context),
     );
   }

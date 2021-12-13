@@ -13,15 +13,16 @@ class ProductAmountInc extends StatelessWidget {
     this.isRounded = true,
     this.iconSize,
     this.textSize,
+    this.iconColor,
   }) : super(key: key);
 
   final int productId;
   final double? gap;
   final double? iconSize;
   final double? textSize;
+  final Color? iconColor;
   final bool isRounded;
 
-  final PublicController _publicController = Get.find();
   final CartController _cartController = Get.find();
 
   @override
@@ -30,29 +31,34 @@ class ProductAmountInc extends StatelessWidget {
         init: CartController(),
         builder: (controller) {
           return Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               InkWell(
-                onTap: () => _cartController.productQuantity.value > 1
-                    ? _cartController.productQuantity.value--
-                    : null,
-                child: Icon(
-                  isRounded ? Icons.remove_circle : Icons.remove,
-                  size: iconSize ?? _publicController.size.value * .08,
-                  color: isRounded
-                      ? ThemeAndColor.blackColor.withOpacity(0.6)
-                      : ThemeAndColor.themeColor,
-                ),
+                onTap: () => controller.productQuantity.value > 1
+                    ? controller.productQuantity.value--
+                    : controller.removeitem(productId),
+                child: Obx(() => Icon(
+                      controller.productQuantity.value < 2
+                          ? Icons.delete
+                          : isRounded
+                              ? Icons.remove_circle
+                              : Icons.remove,
+                      size: iconSize ?? customWidth(.08),
+                      color: isRounded
+                          ? iconColor ??
+                              ThemeAndColor.blackColor.withOpacity(0.6)
+                          : iconColor ?? ThemeAndColor.themeColor,
+                    )),
               ),
               SizedBox(
                 width: customWidth(gap ?? .025),
               ),
               Container(
-                color: Colors.white,
                 child: Obx(() => Text(
-                      "${_cartController.productQuantity.value}",
+                      "${controller.productQuantity.value}",
                       style: TextStyle(
-                          fontSize:
-                              textSize ?? _publicController.size.value * .05,
+                          fontSize: textSize ?? customWidth(.05),
                           fontWeight: FontWeight.w600,
                           decoration: TextDecoration.underline),
                     )),
@@ -61,13 +67,13 @@ class ProductAmountInc extends StatelessWidget {
                 width: customWidth(gap ?? .025),
               ),
               InkWell(
-                onTap: () => _cartController.productQuantity.value++,
+                onTap: () => controller.productQuantity.value++,
                 child: Icon(
                   isRounded ? Icons.add_circle : Icons.add,
-                  size: iconSize ?? _publicController.size.value * .08,
+                  size: iconSize ?? customWidth(.08),
                   color: isRounded
-                      ? ThemeAndColor.blackColor.withOpacity(0.6)
-                      : ThemeAndColor.themeColor,
+                      ? iconColor ?? ThemeAndColor.blackColor.withOpacity(0.6)
+                      : iconColor ?? ThemeAndColor.themeColor,
                 ),
               ),
             ],

@@ -18,21 +18,21 @@ class AccountPage extends StatelessWidget {
   var profileSetting = [
     'Edit Profile',
     'My Wishlist',
-    'App Settings',
-    'Shipping Address',
+    // 'App Settings',
+    // 'Shipping Address',
     'Order History',
     "Payment Methods",
-    'Cards',
+    // 'Cards',
   ];
 
   var profileSettingIcons = [
     Icons.person,
     Icons.favorite_border,
-    Icons.settings,
-    FontAwesomeIcons.mapMarker,
+    // Icons.settings,
+    // FontAwesomeIcons.mapMarker,
     FontAwesomeIcons.clipboard,
     FontAwesomeIcons.moneyBillAlt,
-    Icons.credit_card,
+    // Icons.credit_card,
   ];
 
   void getToNextPage(int index) {
@@ -43,10 +43,10 @@ class AccountPage extends StatelessWidget {
       case 1:
         Get.to(() => WishListPage());
         break;
-      case 4:
+      case 2:
         Get.to(() => OrderHistoryPage());
         break;
-      case 5:
+      case 3:
         Get.to(() => PaymentMethodPage());
         break;
       default:
