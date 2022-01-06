@@ -7,8 +7,7 @@ import 'package:safora_mart/static_variavles/theme_and_color.dart';
 import '../config.dart';
 
 class OrderHistoryItemDetail extends StatefulWidget {
-  OrderHistoryItemDetail({Key? key, required this.order}) : super(key: key);
-
+  const OrderHistoryItemDetail({Key? key, required this.order}) : super(key: key);
   final Order order;
 
   @override
@@ -17,9 +16,7 @@ class OrderHistoryItemDetail extends StatefulWidget {
 
 class _OrderHistoryItemDetailState extends State<OrderHistoryItemDetail> {
   double totalPrice = 0;
-
   double totalQuantity = 0;
-
   var _currentIndex = 0;
 
   @override
@@ -31,7 +28,7 @@ class _OrderHistoryItemDetailState extends State<OrderHistoryItemDetail> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
           "Order Item",
           style: Theme.of(context).textTheme.headline2,
@@ -58,9 +55,7 @@ class _OrderHistoryItemDetailState extends State<OrderHistoryItemDetail> {
   Stepper _orderStepper() {
     return Stepper(
       physics: const NeverScrollableScrollPhysics(),
-      controlsBuilder: (context, {onStepCancel, onStepContinue}) {
-        return Container();
-      },
+      controlsBuilder: (BuildContext context, onStepCancel)=>Container(),
       currentStep: _currentIndex,
       steps: [
         Step(
@@ -129,7 +124,7 @@ class _OrderHistoryItemDetailState extends State<OrderHistoryItemDetail> {
 
   Card _itemDetail(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -212,8 +207,8 @@ class _OrderHistoryItemDetailState extends State<OrderHistoryItemDetail> {
         TextSpan(
           text: text1,
           style: isTitleBold
-              ? TextStyle(fontWeight: FontWeight.w500)
-              : TextStyle(fontWeight: FontWeight.normal),
+              ? const TextStyle(fontWeight: FontWeight.w500)
+              : const TextStyle(fontWeight: FontWeight.normal),
           children: [
             TextSpan(
               text: text2,
